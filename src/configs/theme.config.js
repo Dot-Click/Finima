@@ -1,7 +1,7 @@
 import {
+  createTheme,
   Button,
   Checkbox,
-  createTheme,
   InputBase,
   NavLink,
   NumberInput,

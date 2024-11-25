@@ -1,16 +1,40 @@
 import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
-import React from "react";
 
-const DataTable = ({ columns, data }) => {
+//nested data is ok, see accessorKeys in ColumnDef below
+const CommonDataTable = ({ data, columns }) => {
   const table = useMantineReactTable({
     columns,
-    data, //must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
+    data,
+    enableRowSelection: true,
+    enableColumnActions: false,
+    enableColumnFilters: false,
+    // enablePagination: false,
+    // enableSorting: false,
+
+    paginationDisplayMode: "pages",
+    mantinePaginationProps: {
+      marginBotton: "40px",
+    },
+    positionToolbarAlertBanner: "bottom",
+    mantinePaginationProps: {
+      color: "dark",
+      // total: totalMembers,
+      // page: pagination.pageIndex,  // Current page index
+      // onChange: (page) => {
+      //     console.log('page ', page)
+      //     setPagination((prev) => ({ ...prev, pageIndex: (page - 1) }))
+      // },
+    },
+
+    mantineTopToolbarProps: {
+      style: {
+        display: "none",
+      },
+    },
+    renderToolbarInternalActions: ({ table }) => <div></div>,
   });
-  return (
-    <div>
-      <MantineReactTable table={table} />
-    </div>
-  );
+
+  return <MantineReactTable table={table} />;
 };
 
-export default DataTable;
+export default CommonDataTable;
