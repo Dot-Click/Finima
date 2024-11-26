@@ -1,13 +1,18 @@
 import { Button, Checkbox, PasswordInput, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CircleUser, Lock } from "lucide-react";
 
 const Login = () => {
+  const navigate = useNavigate();
   const form = useForm({
     mode: "uncontrolled",
-    initialValues: { email: "", password: "", rememberMe: false },
+    initialValues: {
+      email: "admin@gmail.com",
+      password: "admin23",
+      rememberMe: false,
+    },
 
     // functions will be used to validate values at corresponding key
     validate: {
@@ -28,7 +33,9 @@ const Login = () => {
       </div>
 
       <form
-        onSubmit={form.onSubmit(console.log)}
+        onSubmit={form.onSubmit(() =>
+          navigate("/dashboard/employee-management")
+        )}
         className="flex flex-col gap-6"
       >
         <TextInput
