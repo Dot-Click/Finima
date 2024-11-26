@@ -3,15 +3,17 @@ import { Drawer } from "@mantine/core";
 const DrawerComponent = ({ content, opened, close, position, size = "md" }) => {
   return (
     <Drawer
+      position={position}
       opened={opened}
       onClose={close}
-      title="Authentication"
+      m={0}
+      style={{ margin: 0 }}
+      // title="Authentication"
       overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
-      size="xl"
+      size={size}
+      withCloseButton={false}
     >
-      {/* Drawer content */}
-      <p>hello</p>
-      {/* {content} */}
+      {content}
     </Drawer>
   );
 };

@@ -50,7 +50,7 @@ const globalSelectStyle = {
         // fontFamily: outfit.style.fontFamily,
         fontSize: "16px",
         height: "45px",
-        borderRadius: "4px",
+        borderRadius: "6px",
       },
       wrapper: {
         marginTop: "0",
@@ -106,7 +106,7 @@ export const theme = createTheme({
     TextInput: TextInput?.extend(globalInputStyle),
     InputBase: InputBase?.extend(globalInputStyle),
     NumberInput: NumberInput?.extend(globalInputStyle),
-    DateInput: DateInput?.extend(globalInputStyle),
+    // DateInput: DateInput?.extend(globalInputStyle),
     PasswordInput: PasswordInput?.extend(globalInputStyle),
     NavLink: NavLink?.extend(globalNavLinkStyle),
     Select: Select?.extend(globalSelectStyle),

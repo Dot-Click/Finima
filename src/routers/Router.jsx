@@ -11,6 +11,9 @@ import VerifyEmail from "../components/auth/VerifyEmail";
 import ResetPassword from "../components/auth/ResetPassword";
 import DashboardLayout from "../layouts/DashboardLayout";
 import EmployeeManagement from "../pages/EmployeeManagement";
+import EmployeeActivity from "../pages/EmployeeActivity";
+import Payroll from "../pages/Payroll";
+import TodayActivity from "../pages/TodayActivity";
 
 const Router = () => {
   // use protected routes for authenticated users (i.e: UserRoute & AdminRoute or make more if you've to)..
@@ -24,6 +27,12 @@ const Router = () => {
           path="/dashboard/employee-management"
           element={<EmployeeManagement />}
         />
+        <Route
+          path="/dashboard/employee-activity"
+          element={<EmployeeActivity />}
+        />
+        <Route path="/dashboard/payroll" element={<Payroll />} />
+        <Route path="/dashboard/today-activity" element={<TodayActivity />} />
       </Route>
 
       {/* Auth routes */}

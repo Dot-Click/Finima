@@ -30,3 +30,31 @@
   font-weight: 500 !important;
   font-size: 16px !important;
 }
+
+.mantine-Drawer-body {
+  padding: 0 !important;
+}
+
+.mantine-Tabs-list {
+  padding-bottom: 10px;
+  flex-wrap: nowrap !important;
+  overflow: auto !important;
+}
+.mantine-Tabs-list::-webkit-scrollbar-thumb {
+  background-color: #646464 !important;
+  border-radius: 10px;
+}
+.mantine-Tabs-list::-webkit-scrollbar {
+  height: 8px;
+  border-radius: 10px;
+  background-color: #f1f1f1 !important;
+}
+
+.profile::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  z-index: 99999;
+  bottom: -10px;
+}

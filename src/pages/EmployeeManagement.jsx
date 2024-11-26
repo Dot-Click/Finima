@@ -1,22 +1,27 @@
 import {
   Avatar,
   Button,
-  Checkbox,
   Input,
   Menu,
   Tabs,
   Divider,
   Text,
+  Select,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import React, { useMemo, useState } from "react";
 import DrawerComponent from "../components/common/Drawer";
 import CommonDataTable from "../components/common/DataTable";
-import { Dot, EllipsisVertical } from "lucide-react";
+import { ChevronDown, Dot, EllipsisVertical } from "lucide-react";
+import { Link } from "react-router-dom";
+import AddEmployee from "../components/modalContent/AddEmployee";
 
 const EmployeeManagement = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [activeTab, setActivetab] = useState("all");
+  const responsive_lg = useMediaQuery("(max-width:992px )");
+  const responsive_sm = useMediaQuery("(max-width:642px )");
+  const responsive_xs = useMediaQuery("(max-width:412px )");
 
   const data = [
     {
@@ -48,7 +53,7 @@ const EmployeeManagement = () => {
       email: "john@gmail.com",
       role: "Plumber",
       hourly: "10",
-      status: "working",
+      status: "unavailable",
       action: "10",
     },
     {
@@ -166,14 +171,17 @@ const EmployeeManagement = () => {
             <div className="text-zinc-700 font-outfit">
               <p
                 className={`flex gap-2 items-center p-1 rounded-lg ${
+                  cell.getValue() === "unavailable" &&
+                  "bg-[#F5F5F5] text-[#A0A0A0] capitalize font-semibold "
+                } ${
+                  cell.getValue() === "checked out" &&
+                  "bg-[#FDECEC] text-[#CE1010] capitalize font-semibold "
+                } ${
                   cell.getValue() === "working" &&
-                  "bg-[#ECFDEC] text-[#16A40F] capitalize font-semibold border border-[#16A40F]"
+                  "bg-[#ECFDEC] text-[#16A40F] capitalize font-semibold "
                 } ${
                   cell.getValue() === "on break" &&
-                  "bg-[#ECECFD] text-[#5151F0] capitalize font-semibold border border-[#5151F0]"
-                }${
-                  cell.getValue() === "checked out" &&
-                  "bg-[#f5c5c5] text-[#CE1010] capitalize font-semibold border border-[#CE1010]"
+                  "bg-[#ECECFD] text-[#5151F0] capitalize font-semibold "
                 }`}
               >
                 <Dot size={30} strokeWidth={3} />
@@ -194,9 +202,11 @@ const EmployeeManagement = () => {
               </Menu.Target>
 
               <Menu.Dropdown>
-                <Menu.Item className="!text-zinc-700 !font-semibold !text-center">
-                  Edit Employee
-                </Menu.Item>
+                <Link to={"/dashboard/employee-activity"}>
+                  <Menu.Item className="!text-zinc-700 !font-semibold !text-center">
+                    Edit Employee
+                  </Menu.Item>
+                </Link>
                 <Divider />
                 <Menu.Item className="!text-blue-800 !font-semibold !text-center">
                   View Detail
@@ -223,20 +233,37 @@ const EmployeeManagement = () => {
         className="font-outfit text-slate-600"
         onChange={(value) => setActivetab(value)}
       >
-        <div className="flex justify-between items-center">
-          <Tabs.List>
-            <Tabs.Tab value="all">All Employees</Tabs.Tab>
-            <Tabs.Tab value="contact">Contact Base</Tabs.Tab>
-            <Tabs.Tab value="hourly">Hourly</Tabs.Tab>
-            <Tabs.Tab value="full">Full Time Employee</Tabs.Tab>
-          </Tabs.List>
-          <div className="flex gap-3">
-            <div className="flex items-center gap-2 bg-white rounded-full p-1 border border-slate-200">
+        <div className="flex justify-between items-center flex-wrap">
+          {responsive_lg ? (
+            <Select
+              w={responsive_sm ? "100%" : "uto"}
+              defaultValue={activeTab}
+              className="border border-slate-200"
+              radius={"lg"}
+              placeholder="Pick value"
+              rightSection={<ChevronDown />}
+              data={[
+                { value: "all", label: "All Employees" },
+                { value: "contact", label: "Contact Base" },
+                { value: "hourly", label: "Hourly Tabs" },
+                { value: "full", label: "Full Time Employee" },
+              ]}
+            />
+          ) : (
+            <Tabs.List>
+              <Tabs.Tab value="all">All Employees</Tabs.Tab>
+              <Tabs.Tab value="contact">Contact Base</Tabs.Tab>
+              <Tabs.Tab value="hourly">Hourly</Tabs.Tab>
+              <Tabs.Tab value="full">Full Time Employee</Tabs.Tab>
+            </Tabs.List>
+          )}
+          <div className="flex  gap-3  mt-2 lg:mt-0">
+            <div className="flex items-center gap-2 bg-white rounded-full p-1 border border-slate-200 ">
               <Input
                 placeholder="Search..."
                 radius={"xl"}
                 variant="unstyled"
-                className="px-2 font-outfit"
+                className="px-2 font-outfit w-full "
               />
               <div className="bg-zinc-200 p-2 rounded-full cursor-pointer border border-slate-300">
                 <svg
@@ -253,7 +280,7 @@ const EmployeeManagement = () => {
                 </svg>
               </div>
             </div>
-            <Button size="md" onClick={open} className="font-semibold">
+            <Button size="md" onClick={open} className="font-semibold ">
               <svg
                 className="me-2"
                 xmlns="http://www.w3.org/2000/svg"
@@ -275,7 +302,7 @@ const EmployeeManagement = () => {
                   clipRule="evenodd"
                 ></path>
               </svg>
-              Add New Employee
+              {responsive_xs ? "Add" : "Add New Employee"}
             </Button>
           </div>
         </div>
@@ -289,7 +316,12 @@ const EmployeeManagement = () => {
         <Tabs.Panel value="hourly">hourly tab content</Tabs.Panel>
         <Tabs.Panel value="full">full tab content</Tabs.Panel> */}
       </Tabs>
-      <DrawerComponent opened={opened} close={close} />
+      <DrawerComponent
+        opened={opened}
+        close={close}
+        position={"right"}
+        content={<AddEmployee close={close} />}
+      />
     </div>
   );
 };
