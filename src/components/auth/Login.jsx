@@ -10,7 +10,7 @@ const Login = () => {
     mode: "uncontrolled",
     initialValues: {
       email: "admin@gmail.com",
-      password: "admin23",
+      password: "admin123",
       rememberMe: false,
     },
 
