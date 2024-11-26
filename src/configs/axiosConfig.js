@@ -1,6 +1,6 @@
 import axios from "axios";
-// import { errorMessage } from "../globalFunctions";
 
+// import { errorMessage } from "../globalFunctions";
 export const baseURL = "http://127.0.0.1:8000/api";
 
 // axios instance for json data
