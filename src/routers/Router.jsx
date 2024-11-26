@@ -14,6 +14,7 @@ import EmployeeManagement from "../pages/EmployeeManagement";
 import EmployeeActivity from "../pages/EmployeeActivity";
 import Payroll from "../pages/Payroll";
 import TodayActivity from "../pages/TodayActivity";
+import Settings from "../pages/Settings";
 
 const Router = () => {
   // use protected routes for authenticated users (i.e: UserRoute & AdminRoute or make more if you've to)..
@@ -33,6 +34,7 @@ const Router = () => {
         />
         <Route path="/dashboard/payroll" element={<Payroll />} />
         <Route path="/dashboard/today-activity" element={<TodayActivity />} />
+        <Route path="/dashboard/settings" element={<Settings />} />
       </Route>
 
       {/* Auth routes */}

@@ -11,7 +11,8 @@ const Home = () => {
 
   return (
     <Container fluid>
-      <Flex direction={"column"} gap={10}>
+      <p>Dashboard</p>
+      {/* <Flex direction={"column"} gap={10}>
         <div>Play around with state the: {state}</div>
         <Flex gap={10}>
           <Button onClick={() => increment()}>Increment</Button>
@@ -26,7 +27,7 @@ const Home = () => {
           class="profile absolute z-10 left-[-12px] bottom-[2px] h-14 aspect-square object-contain border-4 border-blue-500 bg-white rounded-full"
         />
         <div className="  h-8 w-8 bg-blue-500  rotate-45"></div>
-      </div>
+      </div> */}
     </Container>
   );
 };
