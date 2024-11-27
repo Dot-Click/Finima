@@ -9,7 +9,7 @@ const SideBar = ({ toggle, opened, openedSidebar, close }) => {
   const location = useLocation();
   return (
     <div
-      className={`bg-white p-3  border-r border-slate-100 h-screen flex flex-col justify-between absolute z-20 xl:sticky lg:translate-x-0  ${
+      className={`bg-white p-3  border-r border-slate-100 h-screen flex flex-col justify-between absolute z-[9999] lg:z-20 xl:sticky lg:translate-x-0  ${
         !openedSidebar
           ? "translate-x-[-300px] duration-700 "
           : "translate-x-0 duration-700"

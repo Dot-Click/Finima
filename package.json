@@ -16,6 +16,7 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "leaflet": "^1.9.4",
+    "leaflet-routing-machine": "^3.2.12",
     "lucide-react": "^0.460.0",
     "mantine-datatable": "^7.12.4",
     "mantine-react-table": "^2.0.0-beta.7",

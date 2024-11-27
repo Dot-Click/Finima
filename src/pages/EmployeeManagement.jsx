@@ -197,20 +197,21 @@ const EmployeeManagement = () => {
         Cell: ({ cell }) => {
           return (
             <Menu shadow="lg" width={160} position="bottom-start">
-              <Menu.Target>
+              <Menu.Target className={"cursor-pointer"}>
                 <EllipsisVertical size={24} strokeWidth={2} />
               </Menu.Target>
 
               <Menu.Dropdown>
+                <Menu.Item className="!text-zinc-700 !font-semibold !text-center">
+                  Edit Employee
+                </Menu.Item>
+
+                <Divider />
                 <Link to={"/dashboard/employee-activity"}>
-                  <Menu.Item className="!text-zinc-700 !font-semibold !text-center">
-                    Edit Employee
+                  <Menu.Item className="!text-blue-800 !font-semibold !text-center">
+                    View Detail
                   </Menu.Item>
                 </Link>
-                <Divider />
-                <Menu.Item className="!text-blue-800 !font-semibold !text-center">
-                  View Detail
-                </Menu.Item>
                 <Divider />
                 <Menu.Item className="!text-red-600 !font-semibold !text-center">
                   Deactivate

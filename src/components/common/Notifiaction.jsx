@@ -5,7 +5,7 @@ import React from "react";
 const Notifiaction = () => {
   return (
     <div>
-      <Menu shadow="md" width={200} position="bottom-start">
+      <Menu shadow="md" width={300} position="bottom-end">
         <Menu.Target>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -21,11 +21,10 @@ const Notifiaction = () => {
           </svg>
         </Menu.Target>
 
-        <Menu.Dropdown>
-          <Menu.Label>Application</Menu.Label>
-          <Menu.Item>Settings</Menu.Item>
-          <Menu.Item>Messages</Menu.Item>
-          <Menu.Item>Gallery</Menu.Item>
+        <Menu.Dropdown className="!z-[999999]">
+          <div className="flex justify-center items-center h-44">
+            <p className="font-outfit">No Notification Found</p>
+          </div>
         </Menu.Dropdown>
       </Menu>
     </div>

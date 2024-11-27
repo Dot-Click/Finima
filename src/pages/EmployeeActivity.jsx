@@ -2,8 +2,13 @@ import { Avatar, Button } from "@mantine/core";
 import React, { useMemo } from "react";
 import CommonDataTable from "../components/common/DataTable";
 import { DateInput } from "@mantine/dates";
+import DrawerComponent from "../components/common/Drawer";
+import TodayActivity from "../components/modalContent/TodayActivity";
+import { useDisclosure } from "@mantine/hooks";
 
 const EmployeeActivity = () => {
+  const [opened, { open, close }] = useDisclosure(false);
+
   const data = [
     {
       date: "11/24/2024",
@@ -175,7 +180,7 @@ const EmployeeActivity = () => {
         header: "Action",
         size: 20,
         Cell: ({ cell }) => {
-          return <Button>View Log</Button>;
+          return <Button onClick={open}>View Log</Button>;
         },
       },
     ],
@@ -264,6 +269,13 @@ const EmployeeActivity = () => {
       <div className="mt-4">
         <CommonDataTable data={data} columns={columns} />
       </div>
+      <DrawerComponent
+        opened={opened}
+        close={close}
+        size={"xl"}
+        position={"right"}
+        content={<TodayActivity close={close} />}
+      />
     </div>
   );
 };

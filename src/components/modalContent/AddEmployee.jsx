@@ -136,12 +136,40 @@ const AddEmployee = ({ close }) => {
           <Select
             label="Position"
             placeholder="Select Position"
-            data={["Plumber", "abc", "xyz", "lmno"]}
+            rightSection={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="10"
+                height="7"
+                fill="none"
+                viewBox="0 0 10 7"
+              >
+                <path
+                  fill="#636363"
+                  d="M4.375 6.357a.87.87 0 0 0 1.25 0l3.768-3.875a.896.896 0 0 0-1.285-1.25L5 4.428 1.892 1.232a.896.896 0 0 0-1.285 1.25z"
+                ></path>
+              </svg>
+            }
+            data={["Plumber", "Carpenter", "Mechanic"]}
             {...form.getInputProps("position")}
           />
           <Select
             label="Category"
             placeholder="Select Category"
+            rightSection={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="10"
+                height="7"
+                fill="none"
+                viewBox="0 0 10 7"
+              >
+                <path
+                  fill="#636363"
+                  d="M4.375 6.357a.87.87 0 0 0 1.25 0l3.768-3.875a.896.896 0 0 0-1.285-1.25L5 4.428 1.892 1.232a.896.896 0 0 0-1.285 1.25z"
+                ></path>
+              </svg>
+            }
             data={["Hourly Rate", "Contract Base", "Full Time"]}
             {...form.getInputProps("category")}
           />

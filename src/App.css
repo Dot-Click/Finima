@@ -58,3 +58,11 @@
   z-index: 99999;
   bottom: -10px;
 }
+
+/* .leaflet-popup-content {
+  margin: 10px !important;
+} */
+
+.mantine-Tooltip-tooltip {
+  z-index: 9999 !important;
+}
