@@ -62,12 +62,16 @@ const ActivityMap = () => {
           draggable: false,
         }).addTo(map);
 
-        startMarkup
-          .bindPopup("<p>Hello world!<br />This is a nice popup.</p>")
+        endMarkup
+          .bindPopup(
+            '<div><p className=" font-outfit !font-bold border-b border-slate-300">William jack </p><p className="font-outfit !font-semibold text-center !mt-[-10px] ">On Break </p></div>'
+          )
           .openPopup();
 
-        endMarkup
-          .bindPopup("<p>Hello world!<br />This is a nice popup.</p>")
+        startMarkup
+          .bindPopup(
+            '<div><p className=" font-outfit !font-bold border-b border-slate-300">William jack </p><p className="font-outfit !font-semibold text-center !mt-[-10px] ">On Break </p></div>'
+          )
           .openPopup();
       }
     }
