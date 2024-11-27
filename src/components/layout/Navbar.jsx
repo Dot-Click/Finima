@@ -22,7 +22,13 @@ const Navbar = ({ openedSidebar, open }) => {
           onClick={open}
           className="block xl:hidden"
         />
-        <Tooltip label={routeName}>
+        <Tooltip
+          label={
+            routeName?.length > 1
+              ? `${routeName[0]} ${routeName[1]}`
+              : `${routeName[0]}`
+          }
+        >
           <p className="text-2xl font-semibold font-outfit text-zinc-800 line-clamp-1 capitalize">
             {routeName?.length > 1
               ? `${routeName[0]} ${routeName[1]}`
