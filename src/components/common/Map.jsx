@@ -46,13 +46,13 @@ const Map = () => {
         >
           <Popup>
             <div>
-              <Text className=" font-outfit !font-bold border-b border-slate-300">
+              <p className=" bg-periwinkle-200 rounded-tl-xl rounded-tr-xl font-outfit !py-2 !px-6 !m-0 !font-semibold border-b border-slate-300">
                 William jack
-              </Text>
+              </p>
 
-              <Text className="font-outfit !font-semibold text-center !mt-[-10px] ">
+              <p className="font-outfit !py-2 !px-6  !m-0 !font-semibold text-center  ">
                 On Break
-              </Text>
+              </p>
             </div>
           </Popup>
         </Marker>

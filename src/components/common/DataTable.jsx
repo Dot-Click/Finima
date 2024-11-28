@@ -9,7 +9,7 @@ const CommonDataTable = ({ data, columns, pagination = true }) => {
     enableColumnActions: false,
     enableColumnFilters: false,
     enablePagination: pagination,
-    // enableSorting: false,
+    enableSorting: true,
 
     paginationDisplayMode: "pages",
     mantinePaginationProps: {

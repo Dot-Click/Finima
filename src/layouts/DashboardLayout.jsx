@@ -7,6 +7,7 @@ import { useDisclosure } from "@mantine/hooks";
 const DashboardLayout = () => {
   const [opened, { toggle }] = useDisclosure();
   const [openedSidebar, { open, close }] = useDisclosure(true);
+  console.log(opened);
 
   return (
     <div className="flex bg-periwinkle-50 ">
@@ -14,7 +15,7 @@ const DashboardLayout = () => {
         className={` ${openedSidebar ? "w-[300px]" : "w-0"}${
           opened
             ? "w-28 transition-all duration-700"
-            : "w-1/4 transition-all duration-700"
+            : "w-[300px] xl:w-[20vw] transition-all duration-700"
         }
         
         } `}
@@ -27,9 +28,15 @@ const DashboardLayout = () => {
         />
       </div>
       {/* <h2>Default Layout</h2> */}
-      <div className="w-full max-h-screen ">
+      <div
+        className={` ${
+          opened
+            ? "xl:w-[91vw] transition-all duration-700"
+            : "xl:w-[80vw] xl:transition-all xl:duration-700"
+        } w-full transition-all duration-700  max-h-screen `}
+      >
         <Navbar openedSidebar={openedSidebar} open={open} />
-        <div className="p-6 h-[90vh] overflow-auto">
+        <div className="p-4 2xl:p-6 h-[86vh] xl:h-[90vh] overflow-auto custom-scroll">
           <Outlet />
         </div>
       </div>

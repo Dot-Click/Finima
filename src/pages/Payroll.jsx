@@ -53,6 +53,7 @@ const Payroll = () => {
         accessorKey: "action",
         header: "Action",
         size: 20,
+        enableSorting: false,
         Cell: ({ cell }) => {
           return (
             <div className="flex items-center gap-2">

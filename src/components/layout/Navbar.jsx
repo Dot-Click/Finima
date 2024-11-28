@@ -15,7 +15,7 @@ const Navbar = ({ openedSidebar, open }) => {
     var routeName = location.pathname?.split("/")[1]?.split("-");
   }
   return (
-    <div className="bg-white flex justify-between items-center py-3 px-6  border-b border-slate-100">
+    <div className="bg-white flex justify-between items-center py-1 2xl:py-3 px-6  border-b border-slate-100 h-[14vh] xl:h-[10vh]">
       <div className="flex items-center gap-2">
         <Burger
           opened={openedSidebar}

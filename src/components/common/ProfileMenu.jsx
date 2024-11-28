@@ -9,13 +9,13 @@ const ProfileMenu = () => {
       <Menu shadow="md" width={200} position="bottom-start">
         <Menu.Target>
           <div className="flex items-center border border-slate-300 w-20 rounded-full p-2">
-            <Avatar color="dark">ZA</Avatar>
+            <Avatar color="dark">WJ</Avatar>
             <ChevronDown size={20} strokeWidth={2} />
           </div>
         </Menu.Target>
 
         <Menu.Dropdown>
-          <Link to={"/dashboard/setting"}>
+          <Link to={"/dashboard/settings"}>
             <Menu.Item>
               <div className="flex items-center gap-3">
                 <svg

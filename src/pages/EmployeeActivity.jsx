@@ -168,7 +168,7 @@ const EmployeeActivity = () => {
       },
       {
         accessorKey: "total",
-        header: "Out Total Work Hours",
+        header: "Total Work Hours",
         Cell: ({ cell }) => {
           return (
             <div className="text-zinc-700 font-outfit">{cell.getValue()}</div>
@@ -179,6 +179,7 @@ const EmployeeActivity = () => {
         accessorKey: "action",
         header: "Action",
         size: 20,
+        enableSorting: false,
         Cell: ({ cell }) => {
           return <Button onClick={open}>View Log</Button>;
         },
@@ -192,10 +193,10 @@ const EmployeeActivity = () => {
         <div className="flex items-center gap-2">
           <Avatar size={"xl"}>WJ</Avatar>
           <div>
-            <p className="font-bold text-xl text-zinc-800 font-outfit">
+            <p className="font-bold text-lg xl:text-xl text-zinc-800 font-outfit">
               Williamson Jack
             </p>
-            <p className="text-slate-400 font-outfit">
+            <p className="text-slate-400 text-sm xl:text-lg font-outfit">
               williamsonjack@gmail.com
             </p>
           </div>

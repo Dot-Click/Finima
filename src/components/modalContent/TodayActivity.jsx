@@ -2,8 +2,9 @@ import { Avatar } from "@mantine/core";
 import React from "react";
 import WorkLogCard from "../common/WorkLogCard";
 import ActivityMap from "../common/ActivityMap";
+import { X } from "lucide-react";
 
-const TodayActivity = () => {
+const TodayActivity = ({ close }) => {
   const data = [
     {
       id: 1,
@@ -103,9 +104,13 @@ const TodayActivity = () => {
     },
   ];
   return (
-    <div>
+    <div className="relative">
       {" "}
-      <div className="p-6 bg-[#FFFEF9] border-b border-[#E9E0C380] flex flex-col justify-center items-center gap-4">
+      <X
+        onClick={close}
+        className="block md:hidden absolute top-4 left-4 cursor-pointer"
+      />
+      <div className="p-4 xl:p-6 bg-[#FFFEF9] border-b border-[#E9E0C380] flex flex-col justify-center items-center gap-4">
         <div>
           <Avatar size={"xl"}>WJ</Avatar>
         </div>
@@ -119,9 +124,9 @@ const TodayActivity = () => {
         </div>
       </div>
       <div className="p-4 flex flex-col gap-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-4 gap-4 items-stretch">
           {data?.map((item, i) => (
-            <div key={i}>
+            <div key={i} className="2xl:flex justify-center">
               <WorkLogCard data={item} />
             </div>
           ))}

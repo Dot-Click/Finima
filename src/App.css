@@ -49,6 +49,24 @@
   border-radius: 10px;
   background-color: #f1f1f1 !important;
 }
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #272727 !important;
+  border-radius: 10px;
+}
+.custom-scroll::-webkit-scrollbar {
+  width: 10px;
+  border-radius: 10px;
+  background-color: #b6b5b5 !important;
+}
+.mantine-Drawer-content::-webkit-scrollbar-thumb {
+  background-color: #272727 !important;
+  border-radius: 10px;
+}
+.mantine-Drawer-content::-webkit-scrollbar {
+  width: 10px;
+  border-radius: 10px;
+  background-color: #b6b5b5 !important;
+}
 
 .profile::before {
   content: "";
@@ -59,9 +77,36 @@
   bottom: -10px;
 }
 
-/* .leaflet-popup-content {
-  margin: 10px !important;
-} */
+.leaflet-popup-content {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.leaflet-popup-close-button {
+  display: none;
+}
+
+.leaflet-control-zoom-out {
+  margin-top: 10px;
+  border-radius: 20px !important;
+  width: 40px !important;
+  height: 40px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+.leaflet-control-zoom-in {
+  background-color: #fffaeb !important;
+
+  border-radius: 20px !important;
+  width: 40px !important;
+  height: 40px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+.leaflet-touch .leaflet-bar {
+  border: none !important;
+}
 
 .mantine-Tooltip-tooltip {
   z-index: 9999 !important;

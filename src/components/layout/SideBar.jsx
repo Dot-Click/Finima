@@ -3,17 +3,17 @@ import Logo from "../common/Logo";
 import { Burger, Divider, Tooltip } from "@mantine/core";
 import { sideMenu } from "../../data/data";
 import { Link, useLocation } from "react-router-dom";
-import { ChevronLeft, ChevronRight, LogOut } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const SideBar = ({ toggle, opened, openedSidebar, close }) => {
   const location = useLocation();
   return (
     <div
-      className={`bg-white p-3  border-r border-slate-100 h-screen flex flex-col justify-between absolute z-[9999] lg:z-20 xl:sticky lg:translate-x-0  ${
+      className={`bg-white p-3  border-r border-slate-100 h-screen flex flex-col justify-between absolute z-[9999] xl:z-20 xl:sticky xl:translate-x-0   ${
         !openedSidebar
-          ? "translate-x-[-300px] duration-700 "
+          ? "translate-x-[-300px]  duration-700 "
           : "translate-x-0 duration-700"
-      } ${opened ? "w-28" : "w-[300px]"}`}
+      } ${opened ? "w-[12vw] xl:w-[9vw]" : ":w-[300px] xl:w-[20vw]"}`}
     >
       <div>
         <div className="flex justify-end">
@@ -41,11 +41,10 @@ const SideBar = ({ toggle, opened, openedSidebar, close }) => {
         <div>
           {sideMenu?.map((item, i) => (
             <div key={i}>
-              {/* Conditionally render Tooltip */}
               {!opened ? (
                 <Link
                   to={item?.link}
-                  className={`my-2 flex items-center gap-2 p-2 px-4 hover:bg-zinc-800 rounded-lg hover:text-white side-bar-Link ${
+                  className={`text-md my-2 flex items-center gap-2 p-2 px-4 hover:bg-zinc-800 rounded-lg hover:text-white side-bar-Link ${
                     opened && "justify-center py-4"
                   } ${
                     location?.pathname === item?.link &&
@@ -59,7 +58,7 @@ const SideBar = ({ toggle, opened, openedSidebar, close }) => {
                 <Tooltip label={item?.name} position="right" withArrow>
                   <Link
                     to={item?.link}
-                    className={`my-2 flex items-center gap-2 p-2 px-4 hover:bg-zinc-800 rounded-lg hover:text-white side-bar-Link ${
+                    className={`my-2 flex items-center gap-2 p-2 px-2 xl:px-4 hover:bg-zinc-800 rounded-lg hover:text-white side-bar-Link ${
                       opened && "justify-center py-4"
                     } ${
                       location?.pathname === item?.link &&
@@ -101,6 +100,7 @@ const SideBar = ({ toggle, opened, openedSidebar, close }) => {
         </Tooltip>
       ) : (
         <Link
+          to={"/"}
           className={` my-2 flex items-center gap-2  p-2 px-4 hover:bg-zinc-800 rounded-lg hover:text-white side-bar-Link ${
             opened && "justify-center py-4"
           }`}

@@ -1,6 +1,7 @@
 import {
   Button,
   Divider,
+  Image,
   NumberInput,
   PasswordInput,
   Select,
@@ -11,9 +12,9 @@ import React from "react";
 
 const AddEmployee = ({ close }) => {
   const form = useForm({
-    mode: "uncontrolled",
     initialValues: {
       image: "",
+      imageUrl: "",
       name: "",
       email: "",
       password: "",
@@ -22,7 +23,6 @@ const AddEmployee = ({ close }) => {
       category: "",
     },
 
-    // functions will be used to validate values at corresponding key
     validate: {
       name: (value) => (value?.length < 2 ? "Enter employee name" : null),
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
@@ -33,6 +33,18 @@ const AddEmployee = ({ close }) => {
       category: (value) => (!value ? "Select Category" : null),
     },
   });
+
+  const selectImage = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const profileFile = URL.createObjectURL(file);
+      form.setValues({
+        image: file,
+        imageUrl: profileFile,
+      });
+    }
+  };
+
   return (
     <div>
       <div className="p-6 bg-[#FFFEF9] border-b border-[#E9E0C380]">
@@ -48,50 +60,59 @@ const AddEmployee = ({ close }) => {
         className="py-4 h-full overflow-auto flex flex-col gap-6"
       >
         <div className="px-10 flex flex-col gap-4">
-          <label htmlFor="image-input" className="flex">
-            <div className="p-4 bg-slate-100 flex w-auto justify-start rounded-full border border-[#AC9475] cursor-pointer">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="30"
-                height="30"
-                fill="none"
-                viewBox="0 0 36 33"
-              >
-                <path
-                  stroke="#AC9475"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2.579"
-                  d="M33.806 18.333v-7.737A8.596 8.596 0 0 0 25.21 2H10.596A8.596 8.596 0 0 0 2 10.596v12.035a8.596 8.596 0 0 0 8.596 8.596H21.36"
-                ></path>
-                <path
-                  stroke="#AC9475"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2.579"
-                  d="m2.447 25.21 4.71-5.501a3.78 3.78 0 0 1 4.763-.465 3.78 3.78 0 0 0 4.762-.464l4.006-4.006a6.88 6.88 0 0 1 8.871-.739l4.247 3.284m-22.763-3.851a2.855 2.855 0 0 0 1.059-5.498 2.854 2.854 0 1 0-1.06 5.498"
-                ></path>
-                <path
-                  stroke="#AC9475"
-                  strokeLinecap="round"
-                  strokeMiterlimit="10"
-                  strokeWidth="2.579"
-                  d="M29.434 21.772v8.596"
-                ></path>
-                <path
-                  stroke="#AC9475"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2.579"
-                  d="m33.376 25.39-3.382-3.382a.793.793 0 0 0-1.12 0l-3.382 3.382"
-                ></path>
-              </svg>
+          <label htmlFor="image-input" className="flex w-16 rounded-full  ">
+            <div className="p-1 bg-slate-100 flex w-auto justify-start rounded-full border border-[#AC9475] cursor-pointer">
+              {form?.values?.imageUrl ? (
+                <Image
+                  src={form?.values?.imageUrl}
+                  className="aspect-square object-contain !rounded-full"
+                />
+              ) : (
+                <svg
+                  className="m-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="30"
+                  height="30"
+                  fill="none"
+                  viewBox="0 0 36 33"
+                >
+                  <path
+                    stroke="#AC9475"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2.579"
+                    d="M33.806 18.333v-7.737A8.596 8.596 0 0 0 25.21 2H10.596A8.596 8.596 0 0 0 2 10.596v12.035a8.596 8.596 0 0 0 8.596 8.596H21.36"
+                  ></path>
+                  <path
+                    stroke="#AC9475"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2.579"
+                    d="m2.447 25.21 4.71-5.501a3.78 3.78 0 0 1 4.763-.465 3.78 3.78 0 0 0 4.762-.464l4.006-4.006a6.88 6.88 0 0 1 8.871-.739l4.247 3.284m-22.763-3.851a2.855 2.855 0 0 0 1.059-5.498 2.854 2.854 0 1 0-1.06 5.498"
+                  ></path>
+                  <path
+                    stroke="#AC9475"
+                    strokeLinecap="round"
+                    strokeMiterlimit="10"
+                    strokeWidth="2.579"
+                    d="M29.434 21.772v8.596"
+                  ></path>
+                  <path
+                    stroke="#AC9475"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2.579"
+                    d="m33.376 25.39-3.382-3.382a.793.793 0 0 0-1.12 0l-3.382 3.382"
+                  ></path>
+                </svg>
+              )}
             </div>
             <input
               id="image-input"
               className="hidden"
               type="file"
               accept="image/*"
+              onChange={selectImage}
             />
           </label>
 

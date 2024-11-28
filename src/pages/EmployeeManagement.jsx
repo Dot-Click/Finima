@@ -5,7 +5,6 @@ import {
   Menu,
   Tabs,
   Divider,
-  Text,
   Select,
 } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
@@ -127,6 +126,7 @@ const EmployeeManagement = () => {
       {
         accessorKey: "name", //access nested data with dot notation
         header: "Employee Name",
+
         Cell: ({ cell }) => {
           return (
             <div className="flex gap-2 items-center">
@@ -139,6 +139,7 @@ const EmployeeManagement = () => {
       {
         accessorKey: "email",
         header: "Email",
+
         Cell: ({ cell }) => {
           return (
             <div className="text-zinc-700 font-outfit">{cell.getValue()}</div>
@@ -194,6 +195,8 @@ const EmployeeManagement = () => {
       {
         accessorKey: "action",
         header: "Action",
+        size: 20,
+        enableSorting: false,
         Cell: ({ cell }) => {
           return (
             <Menu shadow="lg" width={160} position="bottom-start">
@@ -224,6 +227,7 @@ const EmployeeManagement = () => {
     ],
     []
   );
+
   return (
     <div>
       <Tabs
