@@ -6,7 +6,9 @@ const Logo = ({ isRedirectable }) => {
       <img
         alt="logo"
         src={logo}
-        className="w-[100px] lg:w-[150px] xl:w-[180px]"
+        className={`${
+          isRedirectable ? "cursor-pointer" : "cursor-default"
+        } w-[100px] lg:w-[150px] xl:w-[180px]`}
       />
     </Link>
   );
