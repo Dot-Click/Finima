@@ -1,14 +1,6 @@
-import React from "react";
-import { useExampleStore } from "../stores/example.store";
-import { useShallow } from "zustand/react/shallow";
-import { Button, Container, Flex } from "@mantine/core";
-import Map from "../components/common/Map";
+import { Container } from "@mantine/core";
 
 const Home = () => {
-  const { state, increment, decrement, reset } = useExampleStore(
-    useShallow((state) => state)
-  );
-
   return (
     <Container fluid>
       <p>Dashboard</p>

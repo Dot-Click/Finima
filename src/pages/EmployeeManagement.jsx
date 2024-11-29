@@ -8,7 +8,7 @@ import {
   Select,
 } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import DrawerComponent from "../components/common/Drawer";
 import CommonDataTable from "../components/common/DataTable";
 import { ChevronDown, Dot, EllipsisVertical } from "lucide-react";

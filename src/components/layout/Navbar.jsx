@@ -1,4 +1,3 @@
-import React from "react";
 import Notifiaction from "../common/Notifiaction";
 import ProfileMenu from "../common/ProfileMenu";
 import { Burger, Divider, Tooltip } from "@mantine/core";
@@ -6,13 +5,13 @@ import { useLocation } from "react-router-dom";
 
 const Navbar = ({ openedSidebar, open }) => {
   const location = useLocation();
-
+  let routeName = "";
   if (location.pathname?.split("/")[3]?.split("-")?.length === 2) {
-    var routeName = location.pathname?.split("/")[3]?.split("-");
+    routeName = location.pathname?.split("/")[3]?.split("-");
   } else if (location.pathname?.split("/")[2]) {
-    var routeName = location.pathname?.split("/")[2]?.split("-");
+    routeName = location.pathname?.split("/")[2]?.split("-");
   } else {
-    var routeName = location.pathname?.split("/")[1]?.split("-");
+    routeName = location.pathname?.split("/")[1]?.split("-");
   }
   return (
     <div className="bg-white flex justify-between items-center py-1 2xl:py-3 px-6  border-b border-slate-100 h-[14vh] xl:h-[10vh]">

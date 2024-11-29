@@ -1,9 +1,5 @@
-import { Divider, Text } from "@mantine/core";
-import React from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-// import { MapContainer } from "react-leaflet/MapContainer";
-// import { TileLayer } from "react-leaflet/TileLayer";
-// import { useMap } from "react-leaflet/hooks";
+
 const Map = () => {
   const customIcon = new L.DivIcon({
     className: "custom-sun-icon h-20", // Custom class for styling

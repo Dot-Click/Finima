@@ -1,4 +1,3 @@
-import React from "react";
 import { Drawer } from "@mantine/core";
 const DrawerComponent = ({ content, opened, close, position, size = "md" }) => {
   return (

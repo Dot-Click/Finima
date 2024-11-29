@@ -1,5 +1,4 @@
-import { Button, Menu } from "@mantine/core";
-import { BellRing } from "lucide-react";
+import { Menu } from "@mantine/core";
 import React from "react";
 
 const Notifiaction = () => {

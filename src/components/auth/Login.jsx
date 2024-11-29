@@ -1,6 +1,5 @@
 import { Button, Checkbox, PasswordInput, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { CircleUser, Lock } from "lucide-react";
 
@@ -17,7 +16,7 @@ const Login = () => {
     // functions will be used to validate values at corresponding key
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
-      password: (value, values) =>
+      password: (value) =>
         value?.trim()?.length < 8 ? "Invalid Password " : null,
     },
   });

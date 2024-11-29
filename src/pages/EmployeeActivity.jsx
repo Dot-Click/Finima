@@ -1,5 +1,5 @@
 import { Avatar, Button } from "@mantine/core";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import CommonDataTable from "../components/common/DataTable";
 import { DateInput } from "@mantine/dates";
 import DrawerComponent from "../components/common/Drawer";

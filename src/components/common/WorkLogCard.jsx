@@ -1,5 +1,3 @@
-import React from "react";
-
 const WorkLogCard = ({ data }) => {
   return (
     <div className="flex items-center justify-between gap-2 p-3 border border-[#AC9475] rounded-lg">

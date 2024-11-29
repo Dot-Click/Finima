@@ -1,7 +1,6 @@
 import { Button, PasswordInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { AtSign, Lock, LockKeyhole, Undo2 } from "lucide-react";
-import React from "react";
+import { Lock, LockKeyhole, Undo2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const ResetPassword = () => {
@@ -13,7 +12,7 @@ const ResetPassword = () => {
     },
 
     validate: {
-      password: (value, values) =>
+      password: (value) =>
         value?.trim()?.length < 8 ? "Invalid Password " : null,
 
       confirmPassword: (value, values) =>

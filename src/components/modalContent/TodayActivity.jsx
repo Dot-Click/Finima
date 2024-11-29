@@ -1,5 +1,4 @@
 import { Avatar } from "@mantine/core";
-import React from "react";
 import WorkLogCard from "../common/WorkLogCard";
 import ActivityMap from "../common/ActivityMap";
 import { X } from "lucide-react";

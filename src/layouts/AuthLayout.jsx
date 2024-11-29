@@ -1,4 +1,3 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
 import Logo from "../components/common/Logo";
 import authVector from "/assets/AuthVector.png";
@@ -11,7 +10,7 @@ const AuthLayout = () => {
       </div>
       <div className="bg-orchid-50 hidden lg:flex w-[40vw]  flex-col items-center justify-center gap-28 p-14">
         <Logo />
-        <img src={authVector} />
+        <img alt="" src={authVector} />
       </div>
     </div>
   );

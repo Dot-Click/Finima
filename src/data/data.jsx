@@ -1,13 +1,3 @@
-import {
-  BriefcaseBusiness,
-  CalendarClock,
-  CircleDollarSign,
-  LayoutDashboard,
-  Settings,
-  UserRoundPlus,
-  UsersRound,
-} from "lucide-react";
-
 // Any static data you're going to use will be coded here...
 export const sideMenu = [
   {

@@ -1,7 +1,6 @@
 import { Button, PinInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { AtSign, Undo2 } from "lucide-react";
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const VerifyEmail = () => {

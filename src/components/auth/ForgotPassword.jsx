@@ -1,7 +1,6 @@
 import { Button, TextInput } from "@mantine/core";
 import { AtSign, Undo2 } from "lucide-react";
 import { useForm } from "@mantine/form";
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {

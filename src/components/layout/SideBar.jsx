@@ -1,4 +1,3 @@
-import React from "react";
 import Logo from "../common/Logo";
 import { Burger, Divider, Tooltip } from "@mantine/core";
 import { sideMenu } from "../../data/data";

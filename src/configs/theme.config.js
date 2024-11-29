@@ -9,7 +9,6 @@ import {
   Select,
   TextInput,
 } from "@mantine/core";
-import { DateInput } from "@mantine/dates";
 
 export const globalInputStyle = {
   defaultProps: {

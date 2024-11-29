@@ -1,25 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
-
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine";
-
-const CustomPopover = () => {
-  return (
-    <div>
-      <p className="!text-zinc-800 !text-lg text-center bg-periwinkle-200 rounded-tl-xl rounded-tr-xl font-outfit !py-2 !px-6 !m-0 !font-semibold border-b border-slate-300">
-        On Break
-      </p>
-      <p className="text-slate-500 font-outfit !py-2 !px-6  !m-0  text-center  ">
-        02:00 PM
-      </p>
-      <p className="text-slate-500 font-outfit !pb-2 !px-6  !m-0  text-center  ">
-        ABC Street Location
-      </p>
-    </div>
-  );
-};
 
 const ActivityMap = () => {
   const customIcon = new L.DivIcon({
@@ -54,7 +37,7 @@ const ActivityMap = () => {
     if (mapRef.current) {
       const map = mapRef.current;
       if (currentLocation?.startPoint && currentLocation?.endPoint) {
-        let routeControl = L.Routing.control({
+        L.Routing.control({
           waypoints: [
             L.latLng(
               currentLocation?.startPoint[0],

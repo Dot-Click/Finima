@@ -8,7 +8,6 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import React from "react";
 
 const AddEmployee = ({ close }) => {
   const form = useForm({
@@ -64,6 +63,7 @@ const AddEmployee = ({ close }) => {
             <div className="p-1 bg-slate-100 flex w-auto justify-start rounded-full border border-[#AC9475] cursor-pointer">
               {form?.values?.imageUrl ? (
                 <Image
+                  alt="profile"
                   src={form?.values?.imageUrl}
                   className="aspect-square object-contain !rounded-full"
                 />

@@ -31,7 +31,7 @@ const CommonDataTable = ({ data, columns, pagination = true }) => {
         display: "none",
       },
     },
-    renderToolbarInternalActions: ({ table }) => <div></div>,
+    renderToolbarInternalActions: () => <div></div>,
   });
 
   return <MantineReactTable table={table} />;
