@@ -33,10 +33,26 @@ const ActivityMap = () => {
       endPoint: [51.52196202695113, -0.1424306631088257],
     });
   }, []);
+
+  // let i = 0;
+  // setInterval(() => {
+  //   i = i + 0.001;
+  //   console.log(i);
+  //   let lat = 51.521291540784794 + i;
+  //   let lan = -0.14259696006774905 - i;
+  //   setCurrentLocation({
+  //     ...currentLocation,
+  //     endPoint: [51.52196202695113, -0.1424306631088257],
+  //     startPoint: [lat, lan],
+  //   });
+  // }, [5000]);
+
   useEffect(() => {
     if (mapRef.current) {
       const map = mapRef.current;
       if (currentLocation?.startPoint && currentLocation?.endPoint) {
+        console.log(currentLocation);
+
         L.Routing.control({
           waypoints: [
             L.latLng(

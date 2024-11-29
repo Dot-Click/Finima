@@ -1,9 +1,104 @@
 import { Button } from "@mantine/core";
 import React, { useMemo } from "react";
 import CommonDataTable from "../components/common/DataTable";
-import { DateInput } from "@mantine/dates";
+import { MonthPickerInput } from "@mantine/dates";
+import { CSVLink } from "react-csv";
 
 const Payroll = () => {
+  const csvData = [
+    [
+      "SNo",
+      "Date",
+      "Day",
+      "Employee Name",
+      "Employee ID",
+      "Position",
+      "Hourly Rate",
+      "Employee Type",
+      "Total Hours Worked",
+      "Overtime",
+      "Total Amount",
+    ],
+    [
+      "1",
+      "11/04/24",
+      "Mon",
+      "Williamson Jack",
+      "EMP001",
+      "Plumber",
+      "$100",
+      "Hourly",
+      "160 hours",
+      "10 hours",
+      "$4,250",
+    ],
+    [
+      "2",
+      "11/05/24",
+      "Tue",
+      "Williamson Jack",
+      "EMP001",
+      "Plumber",
+      "$100",
+      "Hourly",
+      "160 hours",
+      "10 hours",
+      "$4,250",
+    ],
+    [
+      "3",
+      "11/06/24",
+      "Wed",
+      "Williamson Jack",
+      "EMP001",
+      "Plumber",
+      "$100",
+      "Hourly",
+      "160 hours",
+      "10 hours",
+      "$4,250",
+    ],
+    [
+      "4",
+      "11/07/24",
+      "Thu",
+      "Williamson Jack",
+      "EMP001",
+      "Plumber",
+      "$100",
+      "Hourly",
+      "160 hours",
+      "10 hours",
+      "$4,250",
+    ],
+    [
+      "5",
+      "11/08/24",
+      "Fri",
+      "Williamson Jack",
+      "EMP001",
+      "Plumber",
+      "$100",
+      "Hourly",
+      "160 hours",
+      "10 hours",
+      "$4,250",
+    ],
+    [
+      "6",
+      "11/09/24",
+      "Sat",
+      "Williamson Jack",
+      "EMP001",
+      "Plumber",
+      "$100",
+      "Hourly",
+      "160 hours",
+      "10 hours",
+      "$4,250",
+    ],
+  ];
+
   const data = [
     {
       week: "Week 1",
@@ -57,32 +152,34 @@ const Payroll = () => {
         Cell: ({ cell }) => {
           return (
             <div className="flex items-center gap-2">
-              <Button size="md">
+              <CSVLink data={csvData} filename={"Payroll Slip.csv"}>
+                <Button size="md" className="!font-normal !text-sm">
+                  {" "}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    fill="none"
+                    viewBox="0 0 23 24"
+                    className="me-2"
+                  >
+                    <path
+                      stroke="#fff"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2.531"
+                      d="M1.375 17.063v1.265a3.797 3.797 0 0 0 3.797 3.797h12.656a3.797 3.797 0 0 0 3.797-3.797v-1.265M16.563 12 11.5 17.063m0 0L6.438 12m5.062 5.063V1.874"
+                    ></path>
+                  </svg>{" "}
+                  CSV
+                </Button>
+              </CSVLink>
+              <Button color="#998366" size="md" className="!font-normal">
                 {" "}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  fill="none"
-                  viewBox="0 0 23 24"
-                  className="me-2"
-                >
-                  <path
-                    stroke="#fff"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2.531"
-                    d="M1.375 17.063v1.265a3.797 3.797 0 0 0 3.797 3.797h12.656a3.797 3.797 0 0 0 3.797-3.797v-1.265M16.563 12 11.5 17.063m0 0L6.438 12m5.062 5.063V1.874"
-                  ></path>
-                </svg>{" "}
-                Download CSV
-              </Button>
-              <Button color="#998366" size="md">
-                {" "}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
+                  width="18"
+                  height="18"
                   fill="none"
                   viewBox="0 0 23 24"
                   className="me-2"
@@ -95,7 +192,7 @@ const Payroll = () => {
                     d="M1.375 17.063v1.265a3.797 3.797 0 0 0 3.797 3.797h12.656a3.797 3.797 0 0 0 3.797-3.797v-1.265M16.563 12 11.5 17.063m0 0L6.438 12m5.062 5.063V1.874"
                   ></path>
                 </svg>
-                Download PDF
+                PDF
               </Button>
             </div>
           );
@@ -107,7 +204,7 @@ const Payroll = () => {
   return (
     <div>
       <div className="flex justify-end items-center">
-        <DateInput
+        <MonthPickerInput
           w={220}
           clearable
           leftSection={
@@ -137,7 +234,12 @@ const Payroll = () => {
       </div>
 
       <div className="mt-4">
-        <CommonDataTable data={data} columns={columns} pagination={false} />
+        <CommonDataTable
+          data={data}
+          columns={columns}
+          pagination={false}
+          selection={false}
+        />
       </div>
     </div>
   );

@@ -1,11 +1,16 @@
 import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
 
 //nested data is ok, see accessorKeys in ColumnDef below
-const CommonDataTable = ({ data, columns, pagination = true }) => {
+const CommonDataTable = ({
+  data,
+  columns,
+  pagination = true,
+  selection = true,
+}) => {
   const table = useMantineReactTable({
     columns,
     data,
-    enableRowSelection: true,
+    enableRowSelection: selection,
     enableColumnActions: false,
     enableColumnFilters: false,
     enablePagination: pagination,
