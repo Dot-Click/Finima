@@ -202,7 +202,7 @@ const EmployeeActivity = () => {
           </div>
         </div>
         <div className="flex gap-3 mt-3 lg:mt-0">
-          <div className="bg-[#FFFCF0] flex gap-2 p-1 items-center px-4 rounded-full cursor-pointer hover:bg-[#f3efdd]">
+          <div className="bg-[#FFFCF0] flex gap-2 p-1 items-center px-4 rounded-full ">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="22"
@@ -235,7 +235,7 @@ const EmployeeActivity = () => {
                 d="M12.222 11.04H5.048A3.55 3.55 0 0 1 1.5 7.491M5.048 3.865v8.357M14.587 3.865v4.81"
               ></path>
             </svg>
-            <p className="font-outfit">Contact</p>
+            <p className="font-outfit">Contract</p>
           </div>
           <DateInput
             w={"auto"}

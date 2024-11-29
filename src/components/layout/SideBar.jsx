@@ -13,7 +13,11 @@ const SideBar = ({ toggle, opened, openedSidebar, close }) => {
         !openedSidebar
           ? "translate-x-[-300px]  duration-700 "
           : "translate-x-0 duration-700"
-      } ${opened ? "w-[12vw] xl:w-[9vw]" : ":w-[300px] xl:w-[20vw]"}`}
+      } ${
+        opened
+          ? "w-[26vw] xl:w-[9vw] !transition-all !duration-700"
+          : ":w-[300px] xl:w-[20vw]"
+      }`}
     >
       <div>
         <div className="flex justify-end">

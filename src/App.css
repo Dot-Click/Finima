@@ -68,6 +68,16 @@
   background-color: #b6b5b5 !important;
 }
 
+.mrt-table-container::-webkit-scrollbar-thumb {
+  background-color: #272727 !important;
+  /* border-radius: 10px; */
+}
+.mrt-table-container::-webkit-scrollbar {
+  height: 10px;
+  /* border-radius: 10px; */
+  background-color: #b6b5b5 !important;
+}
+
 .profile::before {
   content: "";
   width: 20px;

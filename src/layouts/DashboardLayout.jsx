@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import SideBar from "../components/layout/SideBar";
 import Navbar from "../components/layout/Navbar";
 import { useDisclosure } from "@mantine/hooks";
-
+import { useLocation } from "react-router-dom";
 const DashboardLayout = () => {
+  const location = useLocation();
   const [opened, { toggle }] = useDisclosure();
   const [openedSidebar, { open, close }] = useDisclosure(true);
-  console.log(opened);
+
+  useEffect(() => {
+    close();
+  }, [location?.pathname]);
 
   return (
     <div className="flex bg-periwinkle-50 ">
