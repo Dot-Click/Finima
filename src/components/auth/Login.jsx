@@ -53,6 +53,22 @@ const Login = () => {
           placeholder="Password"
           className="font-outfit"
           size="md"
+          rightSection={
+            <div className="bg-[#FAF5E4] p-2 px-3 rounded-lg me-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="19"
+                fill="none"
+                viewBox="0 0 12 19"
+              >
+                <path
+                  fill="#999791"
+                  d="M5.069 9.85c.77-1.39 2.25-2.21 3.11-3.44.91-1.29.4-3.7-2.18-3.7-.988 0-1.682.438-2.158 1.013-.52.629-1.356 1.056-2.108.74-.674-.284-1.03-1.05-.657-1.68C2.018 1.199 3.716 0 5.99 0c2.35 0 3.96 1.07 4.78 2.41.7 1.15 1.11 3.3.03 4.9-1.2 1.77-2.35 2.31-2.97 3.45a2.2 2.2 0 0 0-.278.789C7.425 12.342 6.828 13 6.025 13c-.796 0-1.492-.642-1.43-1.435.043-.558.165-1.158.474-1.715M7.999 17c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2"
+                ></path>
+              </svg>
+            </div>
+          }
           leftSection={<Lock strokeWidth="1.5" size={20} color="#cecdcb" />}
           // key={form.key("password")}
           {...form.getInputProps("password")}
