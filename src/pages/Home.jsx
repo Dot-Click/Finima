@@ -1,9 +1,18 @@
 import { Container } from "@mantine/core";
+import { useDispatch, useSelector } from "react-redux";
+import { decrement, increment } from "../redux/slices/counter";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const { value } = useSelector((state) => state?.counter);
+  console.log(value);
+
   return (
     <Container fluid>
       <p>Dashboard</p>
+      <button onClick={() => dispatch(decrement())}>-</button>
+      <p>{value}</p>
+      <button onClick={() => dispatch(increment())}>+</button>
       {/* <Flex direction={"column"} gap={10}>
         <div>Play around with state the: {state}</div>
         <Flex gap={10}>
