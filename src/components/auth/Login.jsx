@@ -2,8 +2,10 @@ import { Button, Checkbox, PasswordInput, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Link, useNavigate } from "react-router-dom";
 import { CircleUser, Lock } from "lucide-react";
-
+import { login } from "../../redux/slices/auth/thunks";
+import { useDispatch } from "react-redux";
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const form = useForm({
     mode: "uncontrolled",
@@ -20,6 +22,10 @@ const Login = () => {
         value?.trim()?.length < 8 ? "Invalid Password " : null,
     },
   });
+  const handleSubmit = async (values) => {
+    const res = await dispatch(login(values));
+    console.log(res);
+  };
   return (
     <div className="w-4/5 md:w-3/5 lg:w-4/5 xl:w-3/6 flex flex-col gap-10">
       <div>
@@ -32,9 +38,7 @@ const Login = () => {
       </div>
 
       <form
-        onSubmit={form.onSubmit(() =>
-          navigate("/dashboard/employee-management")
-        )}
+        onSubmit={form.onSubmit(handleSubmit)}
         className="flex flex-col gap-6"
       >
         <TextInput
