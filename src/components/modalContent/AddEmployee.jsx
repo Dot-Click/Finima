@@ -8,8 +8,11 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useDispatch, useSelector } from "react-redux";
+import { addEmployee } from "../../redux/slices/employee/thunks";
 
 const AddEmployee = ({ close }) => {
+  const dispatch = useDispatch();
   const form = useForm({
     initialValues: {
       image: "",
@@ -17,7 +20,7 @@ const AddEmployee = ({ close }) => {
       name: "",
       email: "",
       password: "",
-      hourly: "",
+      hourlyRate: "",
       position: "",
       category: "",
     },
@@ -27,7 +30,7 @@ const AddEmployee = ({ close }) => {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
       password: (value) =>
         !value ? "Password must contain 8 characters" : null,
-      hourly: (value) => (!value ? "Enter hourly rate" : null),
+      hourlyRate: (value) => (!value ? "Enter hourly rate" : null),
       position: (value) => (!value ? "Select position" : null),
       category: (value) => (!value ? "Select Category" : null),
     },
@@ -44,6 +47,21 @@ const AddEmployee = ({ close }) => {
     }
   };
 
+  const handleSubmit = async (values) => {
+    const data = {
+      name: values?.name,
+      email: values?.email,
+      password: values?.password,
+      hourlyRate: values?.hourlyRate,
+      position: values?.position,
+      category: values?.category,
+    };
+    const res = await dispatch(addEmployee(data));
+    if (res) {
+      close();
+    }
+  };
+
   return (
     <div>
       <div className="p-6 bg-[#FFFEF9] border-b border-[#E9E0C380]">
@@ -55,7 +73,7 @@ const AddEmployee = ({ close }) => {
         </p>
       </div>
       <form
-        onSubmit={form.onSubmit(console.log)}
+        onSubmit={form.onSubmit(handleSubmit)}
         className="py-4 h-full overflow-auto flex flex-col gap-6"
       >
         <div className="px-10 flex flex-col gap-4">
@@ -152,7 +170,7 @@ const AddEmployee = ({ close }) => {
             }
             label="Hourly Rate"
             placeholder="00"
-            {...form.getInputProps("hourly")}
+            {...form.getInputProps("hourlyRate")}
           />
           <Select
             label="Position"
@@ -191,7 +209,11 @@ const AddEmployee = ({ close }) => {
                 ></path>
               </svg>
             }
-            data={["Hourly Rate", "Contract Base", "Full Time"]}
+            data={[
+              { value: "contact", label: "Contact Base" },
+              { value: "hourly", label: "Hourly Tabs" },
+              { value: "full time", label: "Full Time Employee" },
+            ]}
             {...form.getInputProps("category")}
           />
         </div>

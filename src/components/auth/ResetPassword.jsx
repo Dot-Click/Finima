@@ -1,9 +1,10 @@
 import { Button, PasswordInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Lock, LockKeyhole, Undo2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const ResetPassword = () => {
+  const { email, otp } = useParams();
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -19,6 +20,18 @@ const ResetPassword = () => {
         value !== values.password ? "Passwords did not match" : null,
     },
   });
+  const handleSubmit = async () => {
+    const data = {
+      email,
+      password,
+      passwordResetToken: otp,
+    };
+    const res = await dispatch(forgotPassword(data));
+
+    if (res?.payload?.success) {
+      navigate(`/login`);
+    }
+  };
   return (
     <div className="w-4/5 md:w-3/5 lg:w-4/5 xl:w-3/6 flex flex-col gap-10">
       <div>
@@ -35,7 +48,7 @@ const ResetPassword = () => {
       </div>
 
       <form
-        onSubmit={form.onSubmit(console.log)}
+        onSubmit={form.onSubmit(handleSubmit)}
         className="flex flex-col gap-6"
       >
         <PasswordInput

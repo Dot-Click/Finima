@@ -9,9 +9,9 @@ export const login = createAsyncThunk(
         email: payload?.email,
         password: payload?.password,
       });
-      console.log(res);
 
       if (res?.data?.success === true) {
+        localStorage.setItem("user", JSON.stringify(res?.data?.user));
         return res.data; // Return data (e.g., user info, token, etc.)
       } else {
         return rejectWithValue("Login failed");
@@ -22,20 +22,41 @@ export const login = createAsyncThunk(
   }
 );
 
-// Async action for registration
-export const register = createAsyncThunk(
-  "auth/register",
+export const forgotPassword = createAsyncThunk(
+  "auth/forgotPassword",
   async (payload, { rejectWithValue }) => {
     try {
-      const res = await custAxios.post("/auth/register", payload);
+      const res = await custAxios.post("/auth/forgotPassword", payload);
       if (res?.data?.success === true) {
+        console.log(res);
+
         return res.data; // Return data (e.g., user info, token, etc.)
       } else {
-        return rejectWithValue("Registration failed");
+        return rejectWithValue("Something went wrong");
       }
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Registration failed"
+        error.response?.data?.message || "OTP send failed"
+      );
+    }
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  "auth/resetPassword",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await custAxios.post("/auth/resetPassword", payload);
+      if (res?.data?.success === true) {
+        console.log(res);
+
+        return res.data; // Return data (e.g., user info, token, etc.)
+      } else {
+        return rejectWithValue("Something went wrong");
+      }
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Password didn't updated"
       );
     }
   }

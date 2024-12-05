@@ -14,7 +14,7 @@ const SideBar = ({ toggle, opened, openedSidebar, close }) => {
           : "translate-x-0 duration-700"
       } ${
         opened
-          ? "w-[26vw] xl:w-[9vw] !transition-all !duration-700"
+          ? "w-[120px] xl:w-[9vw] !transition-all !duration-700"
           : ":w-[300px] xl:w-[20vw]"
       }`}
     >

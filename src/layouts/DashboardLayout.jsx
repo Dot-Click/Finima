@@ -4,12 +4,18 @@ import SideBar from "../components/layout/SideBar";
 import Navbar from "../components/layout/Navbar";
 import { useDisclosure } from "@mantine/hooks";
 import { useLocation } from "react-router-dom";
+import custAxios from "../configs/axiosConfig";
 const DashboardLayout = () => {
   const location = useLocation();
   const [opened, { toggle }] = useDisclosure();
   const [openedSidebar, { open, close }] = useDisclosure(true);
 
+  const foo = async () => {
+    const res2 = await custAxios.get("/auth/me");
+    console.log(res2);
+  };
   useEffect(() => {
+    foo();
     close();
   }, [location?.pathname]);
 

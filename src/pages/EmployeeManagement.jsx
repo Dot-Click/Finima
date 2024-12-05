@@ -8,19 +8,47 @@ import {
   Select,
 } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import DrawerComponent from "../components/common/Drawer";
 import CommonDataTable from "../components/common/DataTable";
 import { ChevronDown, Dot, EllipsisVertical } from "lucide-react";
 import { Link } from "react-router-dom";
 import AddEmployee from "../components/modalContent/AddEmployee";
+import { useDispatch, useSelector } from "react-redux";
 
+import {
+  getEmployee,
+  activateDeactivateEmployee,
+} from "../redux/slices/employee/thunks";
 const EmployeeManagement = () => {
+  const dispatch = useDispatch();
+  const { employees } = useSelector((state) => state.employee);
   const [opened, { open, close }] = useDisclosure(false);
   const [activeTab, setActivetab] = useState("all");
   const responsive_lg = useMediaQuery("(max-width:992px )");
   const responsive_sm = useMediaQuery("(max-width:642px )");
   const responsive_xs = useMediaQuery("(max-width:412px )");
+
+  const [filter, setFilter] = useState({
+    category: "all",
+    search: "",
+    sort: "",
+    page: 1,
+  });
+  console.log(employees);
+
+  const handleApiCall = async () => {
+    await dispatch(getEmployee(filter));
+  };
+
+  const handleActivateDeactivateEmployee = async (id) => {
+    console.log(id);
+    await dispatch(activateDeactivateEmployee(id));
+  };
+
+  useEffect(() => {
+    handleApiCall();
+  }, [filter]);
 
   const data = [
     {
@@ -130,7 +158,7 @@ const EmployeeManagement = () => {
         Cell: ({ cell }) => {
           return (
             <div className="flex gap-2 items-center">
-              <Avatar>WS</Avatar>{" "}
+              <Avatar>{cell.getValue()[0]}</Avatar>{" "}
               <p className="text-zinc-700 font-outfit">{cell.getValue()}</p>
             </div>
           );
@@ -151,12 +179,14 @@ const EmployeeManagement = () => {
         header: "Role",
         Cell: ({ cell }) => {
           return (
-            <div className="text-zinc-700 font-outfit">{cell.getValue()}</div>
+            <div className="text-zinc-700 font-outfit capitalize">
+              {cell.getValue()}
+            </div>
           );
         },
       },
       {
-        accessorKey: "hourly",
+        accessorKey: "hourlyRate",
         header: "Hourly Rate",
         Cell: ({ cell }) => {
           return (
@@ -216,8 +246,18 @@ const EmployeeManagement = () => {
                   </Menu.Item>
                 </Link>
                 <Divider />
-                <Menu.Item className="!text-red-600 !font-semibold !text-center">
-                  Deactivate
+                <Menu.Item
+                  onClick={() => {
+                    console.log(cell?.row?.original?._id);
+                    handleActivateDeactivateEmployee(cell?.row?.original?._id);
+                  }}
+                  className={
+                    cell?.row?.original?.isActive
+                      ? "!text-red-600 !font-semibold !text-center"
+                      : "!text-green-600 !font-semibold !text-center"
+                  }
+                >
+                  {cell?.row?.original?.isActive ? "Deactivate" : "Activate"}
                 </Menu.Item>
               </Menu.Dropdown>
             </Menu>
@@ -227,7 +267,7 @@ const EmployeeManagement = () => {
     ],
     []
   );
-
+  console.log(filter);
   return (
     <div>
       <Tabs
@@ -236,7 +276,12 @@ const EmployeeManagement = () => {
         variant="pills"
         defaultValue="all"
         className="font-outfit text-slate-600"
-        onChange={(value) => setActivetab(value)}
+        onChange={(value) =>
+          setFilter((prev) => ({
+            ...prev,
+            category: value,
+          }))
+        }
       >
         <div className="flex justify-between items-center flex-wrap">
           {responsive_lg ? (
@@ -251,15 +296,18 @@ const EmployeeManagement = () => {
                 { value: "all", label: "All Employees" },
                 { value: "contact", label: "Contact Base" },
                 { value: "hourly", label: "Hourly Tabs" },
-                { value: "full", label: "Full Time Employee" },
+                { value: "full time", label: "Full Time Employee" },
               ]}
+              onChange={(value) =>
+                setFilter((prev) => ({ ...prev, category: value }))
+              }
             />
           ) : (
             <Tabs.List>
               <Tabs.Tab value="all">All Employees</Tabs.Tab>
               <Tabs.Tab value="contact">Contact Base</Tabs.Tab>
               <Tabs.Tab value="hourly">Hourly</Tabs.Tab>
-              <Tabs.Tab value="full">Full Time Employee</Tabs.Tab>
+              <Tabs.Tab value="full time">Full Time Employee</Tabs.Tab>
             </Tabs.List>
           )}
           <div className="flex  gap-3  mt-2 lg:mt-0">
@@ -269,6 +317,9 @@ const EmployeeManagement = () => {
                 radius={"xl"}
                 variant="unstyled"
                 className="px-2 font-outfit w-full "
+                onChange={(e) =>
+                  setFilter((prev) => ({ ...prev, search: e.target.value }))
+                }
               />
               <div className="bg-zinc-200 p-2 rounded-full cursor-pointer border border-slate-300">
                 <svg
@@ -312,9 +363,12 @@ const EmployeeManagement = () => {
           </div>
         </div>
 
-        <Tabs.Panel value={activeTab}>
+        <Tabs.Panel value={filter?.category || "all"}>
           <div className="mt-4">
-            <CommonDataTable data={data} columns={columns} />
+            <CommonDataTable
+              data={employees?.employees || []}
+              columns={columns}
+            />
           </div>
         </Tabs.Panel>
         {/* <Tabs.Panel value="contact">contact tab content</Tabs.Panel>

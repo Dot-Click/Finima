@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login, register } from "./thunks";
+import { login, forgotPassword, resetPassword } from "./thunks";
 const initialState = {
   value: null,
   loading: false,
@@ -18,7 +18,11 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(register.pending, (state) => {
+      .addCase(forgotPassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(resetPassword.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
@@ -32,12 +36,22 @@ const authSlice = createSlice({
         state.error = action.payload; // Store error message
         // errorMessage(state.error); // Optionally display the error
       })
-      // Register action handlers
-      .addCase(register.fulfilled, (state, action) => {
+      // Forgot action handlers
+      .addCase(forgotPassword.fulfilled, (state, action) => {
         state.loading = false;
         state.value = action.payload; // Save user data
       })
-      .addCase(register.rejected, (state, action) => {
+      .addCase(forgotPassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Store error message
+        // errorMessage(state.error); // Optionally display the error
+      })
+      // reset password action handlers
+      .addCase(resetPassword.fulfilled, (state, action) => {
+        state.loading = false;
+        state.value = action.payload; // Save user data
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Store error message
         // errorMessage(state.error); // Optionally display the error

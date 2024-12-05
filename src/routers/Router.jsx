@@ -42,8 +42,8 @@ const Router = () => {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/verify-email" element={<VerifyEmail />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/verify-email/:email" element={<VerifyEmail />} />
+        <Route path="/reset-password/:email/:otp" element={<ResetPassword />} />
       </Route>
 
       {/* Not found page */}

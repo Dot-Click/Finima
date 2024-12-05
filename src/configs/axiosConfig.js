@@ -10,6 +10,7 @@ const custAxios = axios.create({
     "Content-Type": "application/json",
     Accept: "application/json",
   },
+  credentials: "include",
 });
 
 // attaching Bearer token to axios so that it can be used in all the requests and the server can verify the user

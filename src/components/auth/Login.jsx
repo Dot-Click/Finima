@@ -24,7 +24,9 @@ const Login = () => {
   });
   const handleSubmit = async (values) => {
     const res = await dispatch(login(values));
-    console.log(res);
+    if (res?.payload?.success) {
+      navigate("/dashboard");
+    }
   };
   return (
     <div className="w-4/5 md:w-3/5 lg:w-4/5 xl:w-3/6 flex flex-col gap-10">

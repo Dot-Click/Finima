@@ -121,3 +121,7 @@
 .mantine-Tooltip-tooltip {
   z-index: 9999 !important;
 }
+
+.mantine-Tabs-panel {
+  display: block !important;
+}
