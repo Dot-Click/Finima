@@ -9,20 +9,28 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDispatch, useSelector } from "react-redux";
-import { addEmployee } from "../../redux/slices/employee/thunks";
+import {
+  addEmployee,
+  updateEmployee,
+  getEmployee,
+} from "../../redux/slices/employee/thunks";
+import { useEffect } from "react";
 
-const AddEmployee = ({ close }) => {
+const AddEmployee = ({ data, close }) => {
   const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state?.employee);
+  console.log(data);
+
   const form = useForm({
     initialValues: {
       image: "",
       imageUrl: "",
-      name: "",
-      email: "",
-      password: "",
-      hourlyRate: "",
-      position: "",
-      category: "",
+      name: data?.name || "",
+      email: data?.email || "",
+      password: "******" || "",
+      hourlyRate: data?.hourlyRate || "",
+      position: data?.position || "",
+      category: data?.category || "",
     },
 
     validate: {
@@ -36,6 +44,12 @@ const AddEmployee = ({ close }) => {
     },
   });
 
+  // useEffect(() => {
+  //   form.setValues({
+  //     name: data?.name,
+  //   });
+  // }, []);
+
   const selectImage = (e) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -48,16 +62,38 @@ const AddEmployee = ({ close }) => {
   };
 
   const handleSubmit = async (values) => {
-    const data = {
-      name: values?.name,
-      email: values?.email,
-      password: values?.password,
-      hourlyRate: values?.hourlyRate,
-      position: values?.position,
-      category: values?.category,
-    };
-    const res = await dispatch(addEmployee(data));
+    let res;
+    if (data) {
+      const payload = {
+        id: data?._id,
+        name: values?.name,
+        email: values?.email,
+        hourlyRate: values?.hourlyRate,
+        position: values?.position,
+        category: values?.category,
+      };
+      res = await dispatch(updateEmployee(payload));
+    } else {
+      const data = {
+        name: values?.name,
+        email: values?.email,
+        password: values?.password,
+        hourlyRate: values?.hourlyRate,
+        position: values?.position,
+        category: values?.category,
+      };
+      res = await dispatch(addEmployee(data));
+    }
     if (res) {
+      await dispatch(
+        getEmployee({
+          category: "all",
+          search: "",
+          sort: "",
+          page: 1,
+          sortDirection: "asc",
+        })
+      );
       close();
     }
   };
@@ -66,7 +102,7 @@ const AddEmployee = ({ close }) => {
     <div>
       <div className="p-6 bg-[#FFFEF9] border-b border-[#E9E0C380]">
         <p className="text-2xl font-semibold font-outfit text-zinc-800">
-          Add Employee
+          {data ? "Edit" : "Add"} Employee
         </p>
         <p className="text-sm text-slate-400 font-outfit font-thin">
           Enter employee details for easy tracking.
@@ -140,11 +176,15 @@ const AddEmployee = ({ close }) => {
             {...form.getInputProps("name")}
           />
           <TextInput
+            readOnly={data && true}
+            disabled={data && true}
             label="Email"
             placeholder="Enter Email"
             {...form.getInputProps("email")}
           />
           <PasswordInput
+            readOnly={data && true}
+            disabled={data && true}
             label="Password"
             placeholder="Enter Password"
             {...form.getInputProps("password")}
@@ -222,7 +262,7 @@ const AddEmployee = ({ close }) => {
           <Button size="md" variant="outline" w={"100%"} onClick={close}>
             <p className="text-zinc-900 font-outfit">Cancel</p>
           </Button>
-          <Button type="submit" size="md" w={"100%"}>
+          <Button loading={loading} type="submit" size="md" w={"100%"}>
             Add & Save
           </Button>
         </div>

@@ -1,7 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getEmployee, addEmployee, activateDeactivateEmployee } from "./thunks";
+import {
+  getEmployee,
+  addEmployee,
+  updateEmployee,
+  getSingleEmployee,
+  activateDeactivateEmployee,
+} from "./thunks";
+import { toast } from "sonner";
+// import { successMessage } from "../../../services/helpers/index";
 const initialState = {
   employees: [],
+  singleEmployee: {},
   loading: false,
   error: null,
 };
@@ -19,6 +28,14 @@ const employeeSlice = createSlice({
         state.error = null;
       })
       .addCase(addEmployee.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateEmployee.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getSingleEmployee.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
@@ -40,22 +57,39 @@ const employeeSlice = createSlice({
       // addEmployee action handlers
       .addCase(addEmployee.fulfilled, (state, action) => {
         state.loading = false;
-        // Save user data
+        toast.success("Account created successfully");
       })
       .addCase(addEmployee.rejected, (state, action) => {
+        state.addUpdateLoading = false;
+      })
+      // updateEmployee action handlers
+      .addCase(updateEmployee.fulfilled, (state, action) => {
         state.loading = false;
-        // Store error message
-        // errorMessage(state.error); // Optionally display the error
+        toast.success("Account updated successfully");
+      })
+      .addCase(updateEmployee.rejected, (state, action) => {
+        state.loading = false;
+      })
+      // getSingleEmployee action handlers
+      .addCase(getSingleEmployee.fulfilled, (state, action) => {
+        state.loading = false;
+        state.singleEmployee = action.payload;
+      })
+      .addCase(getSingleEmployee.rejected, (state, action) => {
+        state.loading = false;
       })
       // activateDeactivateEmployee action handlers
       .addCase(activateDeactivateEmployee.fulfilled, (state, action) => {
         state.loading = false;
-        // Save user data
+        toast.success(
+          `${action?.payload?.data?.name}'s account ${
+            action?.payload?.data?.isActive ? "Activated" : "Deactivated"
+          }`
+        );
       })
       .addCase(activateDeactivateEmployee.rejected, (state, action) => {
         state.loading = false;
-        // Store error message
-        // errorMessage(state.error); // Optionally display the error
+        toast.success(state.error || "Whoops! something went wrong");
       });
   },
 });

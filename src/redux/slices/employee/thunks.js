@@ -37,6 +37,42 @@ export const addEmployee = createAsyncThunk(
   }
 );
 
+export const updateEmployee = createAsyncThunk(
+  "employee/update",
+  async (payload, { rejectWithValue }) => {
+    console.log(payload);
+
+    try {
+      const res = await custAxios.put(`/employee/${payload?.id}`, payload);
+
+      if (res?.data) {
+        return res.data; // Return data (e.g., user info, token, etc.)
+      } else {
+        return rejectWithValue("Employee didn't updated");
+      }
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "Login failed");
+    }
+  }
+);
+
+export const getSingleEmployee = createAsyncThunk(
+  "employee/single",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await custAxios.get(`/employee/${payload}`);
+
+      if (res?.data) {
+        return res.data; // Return data (e.g., user info, token, etc.)
+      } else {
+        return rejectWithValue("Employee didn't updated");
+      }
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "Login failed");
+    }
+  }
+);
+
 export const activateDeactivateEmployee = createAsyncThunk(
   "employee/activateDeactivate",
   async (payload, { rejectWithValue }) => {

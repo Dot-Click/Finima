@@ -1,10 +1,13 @@
 import { Button, PasswordInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Lock, LockKeyhole, Undo2 } from "lucide-react";
+import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 
 const ResetPassword = () => {
   const { email, otp } = useParams();
+  const { loading } = useSelector((state) => state?.auth);
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -72,7 +75,14 @@ const ResetPassword = () => {
           {...form.getInputProps("confirmPassword")}
         />
 
-        <Button type="submit" size="lg" mt={"xl"} fullWidth>
+        <Button
+          loading={loading}
+          loaderProps={{ type: "dots" }}
+          type="submit"
+          size="lg"
+          mt={"xl"}
+          fullWidth
+        >
           Reset Password
         </Button>
       </form>

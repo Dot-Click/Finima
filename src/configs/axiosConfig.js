@@ -2,15 +2,16 @@ import axios from "axios";
 // import { errorMessage } from "../globalFunctions";
 
 export const baseURL = "http://192.168.0.198:8001";
+// export const baseURL = "https://finma-be-production.up.railway.app";
 
 // axios instance for json data
 const custAxios = axios.create({
+  withCredentials: true,
   baseURL: baseURL,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
   },
-  credentials: "include",
 });
 
 // attaching Bearer token to axios so that it can be used in all the requests and the server can verify the user

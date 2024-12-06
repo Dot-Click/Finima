@@ -6,6 +6,7 @@ import {
   Tabs,
   Divider,
   Select,
+  Loader,
 } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { useMemo, useState, useEffect } from "react";
@@ -22,7 +23,7 @@ import {
 } from "../redux/slices/employee/thunks";
 const EmployeeManagement = () => {
   const dispatch = useDispatch();
-  const { employees } = useSelector((state) => state.employee);
+  const { employees, loading } = useSelector((state) => state.employee);
   const [opened, { open, close }] = useDisclosure(false);
   const [activeTab, setActivetab] = useState("all");
   const responsive_lg = useMediaQuery("(max-width:992px )");
@@ -33,9 +34,12 @@ const EmployeeManagement = () => {
     category: "all",
     search: "",
     sort: "",
-    page: 1,
+    page: 0,
+    limit: 5,
+    sortDirection: "asc",
   });
-  console.log(employees);
+
+  const [editData, setEditData] = useState({});
 
   const handleApiCall = async () => {
     await dispatch(getEmployee(filter));
@@ -43,7 +47,10 @@ const EmployeeManagement = () => {
 
   const handleActivateDeactivateEmployee = async (id) => {
     console.log(id);
-    await dispatch(activateDeactivateEmployee(id));
+    const res = await dispatch(activateDeactivateEmployee(id));
+    if (res) {
+      handleApiCall();
+    }
   };
 
   useEffect(() => {
@@ -149,12 +156,38 @@ const EmployeeManagement = () => {
     },
   ];
 
+  const handleSorting = (e) => {
+    const res = e();
+    setFilter((prev) => ({
+      ...prev,
+      sort: res[0]?.id,
+      sortDirection: prev.sortDirection === "asc" ? "dsc" : "asc",
+    }));
+    return res;
+  };
+
+  const handlePagination = (e) => {
+    const res = e(filter.page);
+    setFilter((prev) => ({
+      ...prev,
+      page: Number.isNaN(res?.pageIndex) ? prev?.page : res?.pageIndex,
+      limit: res?.pageSize || 5,
+    }));
+    console.log(res);
+  };
+
+  const handelEditEmployee = async (row) => {
+    await setEditData(row);
+    open();
+  };
   const columns = useMemo(
     () => [
       {
         accessorKey: "name", //access nested data with dot notation
         header: "Employee Name",
-
+        enableSorting: (e) => {
+          console.log(e);
+        },
         Cell: ({ cell }) => {
           return (
             <div className="flex gap-2 items-center">
@@ -205,7 +238,7 @@ const EmployeeManagement = () => {
                   cell.getValue() === "unavailable" &&
                   "bg-[#F5F5F5] text-[#A0A0A0] capitalize font-semibold "
                 } ${
-                  cell.getValue() === "checked out" &&
+                  cell.getValue() === "check out" &&
                   "bg-[#FDECEC] text-[#CE1010] capitalize font-semibold "
                 } ${
                   cell.getValue() === "working" &&
@@ -235,12 +268,17 @@ const EmployeeManagement = () => {
               </Menu.Target>
 
               <Menu.Dropdown>
-                <Menu.Item className="!text-zinc-700 !font-semibold !text-center">
+                <Menu.Item
+                  onClick={() => handelEditEmployee(cell?.row?.original)}
+                  className="!text-zinc-700 !font-semibold !text-center"
+                >
                   Edit Employee
                 </Menu.Item>
 
                 <Divider />
-                <Link to={"/dashboard/employee-activity"}>
+                <Link
+                  to={`/dashboard/employee-activity/${cell?.row?.original?._id}`}
+                >
                   <Menu.Item className="!text-blue-800 !font-semibold !text-center">
                     View Detail
                   </Menu.Item>
@@ -267,7 +305,7 @@ const EmployeeManagement = () => {
     ],
     []
   );
-  console.log(filter);
+  console.log(editData);
   return (
     <div>
       <Tabs
@@ -336,7 +374,14 @@ const EmployeeManagement = () => {
                 </svg>
               </div>
             </div>
-            <Button size="md" onClick={open} className="font-semibold ">
+            <Button
+              size="md"
+              onClick={async () => {
+                await setEditData({});
+                open();
+              }}
+              className="font-semibold "
+            >
               <svg
                 className="me-2"
                 xmlns="http://www.w3.org/2000/svg"
@@ -364,12 +409,36 @@ const EmployeeManagement = () => {
         </div>
 
         <Tabs.Panel value={filter?.category || "all"}>
-          <div className="mt-4">
-            <CommonDataTable
-              data={employees?.employees || []}
-              columns={columns}
-            />
-          </div>
+          {false ? (
+            <div className="h-[60vh] flex justify-center items-center">
+              <Loader type="dots" size="xl" color="dark" />
+            </div>
+          ) : employees?.employees?.length > 0 ? (
+            <div className="mt-4">
+              <CommonDataTable
+                data={employees?.employees || []}
+                columns={columns}
+                handleSorting={handleSorting}
+                isLoading={loading}
+                sort={{ id: filter?.sort, desc: filter?.sortDirection }}
+                handlePagination={handlePagination}
+                pagination={{
+                  pageIndex: filter?.page,
+                  pageSize: 5,
+                }}
+                totalCount={employees?.totalDocs?.count}
+              />
+            </div>
+          ) : (
+            <div className="h-[60vh] flex justify-center items-center">
+              <div>
+                <p className="text-2xl font-semibold font-outfit text-center">
+                  No employees found!
+                </p>
+                <p className="font-outfit">There are no employees found yet</p>
+              </div>
+            </div>
+          )}
         </Tabs.Panel>
         {/* <Tabs.Panel value="contact">contact tab content</Tabs.Panel>
         <Tabs.Panel value="hourly">hourly tab content</Tabs.Panel>
@@ -379,7 +448,7 @@ const EmployeeManagement = () => {
         opened={opened}
         close={close}
         position={"right"}
-        content={<AddEmployee close={close} />}
+        content={<AddEmployee data={editData} close={close} />}
       />
     </div>
   );

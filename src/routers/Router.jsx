@@ -29,7 +29,7 @@ const Router = () => {
           element={<EmployeeManagement />}
         />
         <Route
-          path="/dashboard/employee-activity"
+          path="/dashboard/employee-activity/:id"
           element={<EmployeeActivity />}
         />
         <Route path="/dashboard/payroll" element={<Payroll />} />

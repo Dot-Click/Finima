@@ -3,15 +3,16 @@ import { useForm } from "@mantine/form";
 import { Link, useNavigate } from "react-router-dom";
 import { CircleUser, Lock } from "lucide-react";
 import { login } from "../../redux/slices/auth/thunks";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { loading } = useSelector((state) => state?.auth);
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
       email: "admin@gmail.com",
-      password: "admin123",
+      password: "Password@123",
       rememberMe: false,
     },
 
@@ -69,7 +70,14 @@ const Login = () => {
           </Link>
         </div>
 
-        <Button type="submit" size="lg" mt={"xl"} fullWidth>
+        <Button
+          loading={loading}
+          loaderProps={{ type: "dots" }}
+          type="submit"
+          size="lg"
+          mt={"xl"}
+          fullWidth
+        >
           Log In
         </Button>
       </form>

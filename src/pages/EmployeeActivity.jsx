@@ -1,13 +1,26 @@
 import { Avatar, Button } from "@mantine/core";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import CommonDataTable from "../components/common/DataTable";
 import { DateInput } from "@mantine/dates";
 import DrawerComponent from "../components/common/Drawer";
 import TodayActivity from "../components/modalContent/TodayActivity";
 import { useDisclosure } from "@mantine/hooks";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getSingleEmployee } from "../redux/slices/employee/thunks";
+import { useParams } from "react-router-dom";
 const EmployeeActivity = () => {
   const [opened, { open, close }] = useDisclosure(false);
+  const dispatch = useDispatch();
+  const { id } = useParams();
+
+  const { singleEmployee } = useSelector((state) => state?.employee);
+  console.log(singleEmployee);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(getSingleEmployee(id));
+    }
+  }, [id]);
 
   const data = [
     {
@@ -191,13 +204,13 @@ const EmployeeActivity = () => {
     <div>
       <div className="flex justify-between items-center flex-wrap">
         <div className="flex items-center gap-2">
-          <Avatar size={"xl"}>WJ</Avatar>
+          <Avatar size={"xl"}> {singleEmployee?.data?.name[0]}</Avatar>
           <div>
-            <p className="font-bold text-lg xl:text-xl text-zinc-800 font-outfit">
-              Williamson Jack
+            <p className="font-bold text-lg xl:text-xl text-zinc-800 font-outfit capitalize">
+              {singleEmployee?.data?.name}
             </p>
             <p className="text-slate-400 text-sm xl:text-lg font-outfit">
-              williamsonjack@gmail.com
+              {singleEmployee?.data?.email}
             </p>
           </div>
         </div>

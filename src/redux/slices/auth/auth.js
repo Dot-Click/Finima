@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login, forgotPassword, resetPassword } from "./thunks";
+import { login, forgotPassword, resetPassword, logout, me } from "./thunks";
+import { toast } from "sonner";
 const initialState = {
   value: null,
   loading: false,
@@ -26,10 +27,19 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
+      .addCase(logout.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(me.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       // Login action handlers
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
         state.value = action.payload; // Save user data
+        toast.success("Login successfully");
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
@@ -52,6 +62,26 @@ const authSlice = createSlice({
         state.value = action.payload; // Save user data
       })
       .addCase(resetPassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Store error message
+        // errorMessage(state.error); // Optionally display the error
+      })
+      // logout action handlers
+      .addCase(logout.fulfilled, (state, action) => {
+        state.loading = false;
+        state.value = action.payload; // Save user data
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload; // Store error message
+        // errorMessage(state.error); // Optionally display the error
+      })
+      // me action handlers
+      .addCase(me.fulfilled, (state, action) => {
+        state.loading = false;
+        state.value = action.payload; // Save user data
+      })
+      .addCase(me.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Store error message
         // errorMessage(state.error); // Optionally display the error
