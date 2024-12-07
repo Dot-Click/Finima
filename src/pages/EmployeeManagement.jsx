@@ -16,7 +16,6 @@ import { ChevronDown, Dot, EllipsisVertical } from "lucide-react";
 import { Link } from "react-router-dom";
 import AddEmployee from "../components/modalContent/AddEmployee";
 import { useDispatch, useSelector } from "react-redux";
-
 import {
   getEmployee,
   activateDeactivateEmployee,
@@ -35,7 +34,7 @@ const EmployeeManagement = () => {
     search: "",
     sort: "",
     page: 0,
-    limit: 5,
+    limit: 10,
     sortDirection: "asc",
   });
 
@@ -158,6 +157,7 @@ const EmployeeManagement = () => {
 
   const handleSorting = (e) => {
     const res = e();
+
     setFilter((prev) => ({
       ...prev,
       sort: res[0]?.id,
@@ -171,7 +171,7 @@ const EmployeeManagement = () => {
     setFilter((prev) => ({
       ...prev,
       page: Number.isNaN(res?.pageIndex) ? prev?.page : res?.pageIndex,
-      limit: res?.pageSize || 5,
+      limit: res?.pageSize || 10,
     }));
     console.log(res);
   };
@@ -208,8 +208,19 @@ const EmployeeManagement = () => {
         },
       },
       {
-        accessorKey: "role", //normal accessorKey
-        header: "Role",
+        accessorKey: "workingHours", //normal accessorKey
+        header: "Working Hours",
+        Cell: ({ cell }) => {
+          return (
+            <div className="text-zinc-700 font-outfit capitalize">
+              {cell.getValue()}
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: "category", //normal accessorKey
+        header: "Employee Type",
         Cell: ({ cell }) => {
           return (
             <div className="text-zinc-700 font-outfit capitalize">
@@ -220,7 +231,7 @@ const EmployeeManagement = () => {
       },
       {
         accessorKey: "hourlyRate",
-        header: "Hourly Rate",
+        header: "Pay",
         Cell: ({ cell }) => {
           return (
             <div className="text-zinc-700 font-outfit">${cell.getValue()}</div>
@@ -235,21 +246,21 @@ const EmployeeManagement = () => {
             <div className="text-zinc-700 font-outfit">
               <p
                 className={`flex gap-2 items-center p-1 rounded-lg ${
-                  cell.getValue() === "unavailable" &&
+                  !cell?.row?.original?.latestActivity?.status &&
                   "bg-[#F5F5F5] text-[#A0A0A0] capitalize font-semibold "
                 } ${
-                  cell.getValue() === "check out" &&
+                  cell?.row?.original?.latestActivity?.status === "check out" &&
                   "bg-[#FDECEC] text-[#CE1010] capitalize font-semibold "
                 } ${
-                  cell.getValue() === "working" &&
+                  cell?.row?.original?.latestActivity?.status === "check in" &&
                   "bg-[#ECFDEC] text-[#16A40F] capitalize font-semibold "
                 } ${
-                  cell.getValue() === "on break" &&
+                  cell?.row?.original?.latestActivity?.status === "on break" &&
                   "bg-[#ECECFD] text-[#5151F0] capitalize font-semibold "
                 }`}
               >
                 <Dot size={30} strokeWidth={3} />
-                {cell.getValue()}
+                {cell?.row?.original?.latestActivity?.status || "Unavailable"}
               </p>
             </div>
           );
@@ -413,20 +424,25 @@ const EmployeeManagement = () => {
             <div className="h-[60vh] flex justify-center items-center">
               <Loader type="dots" size="xl" color="dark" />
             </div>
-          ) : employees?.employees?.length > 0 ? (
+          ) : employees?.data?.length > 0 ? (
             <div className="mt-4">
               <CommonDataTable
-                data={employees?.employees || []}
+                data={employees?.data || []}
                 columns={columns}
                 handleSorting={handleSorting}
                 isLoading={loading}
-                sort={{ id: filter?.sort, desc: filter?.sortDirection }}
+                sort={[
+                  {
+                    id: filter?.sort,
+                    desc: filter?.sortDirection === "asc" ? true : false,
+                  },
+                ]}
                 handlePagination={handlePagination}
                 pagination={{
                   pageIndex: filter?.page,
-                  pageSize: 5,
+                  pageSize: filter?.limit,
                 }}
-                totalCount={employees?.totalDocs?.count}
+                totalCount={employees?.totalDoc[0]?.count}
               />
             </div>
           ) : (

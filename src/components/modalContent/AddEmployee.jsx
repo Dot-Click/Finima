@@ -27,7 +27,8 @@ const AddEmployee = ({ data, close }) => {
       imageUrl: "",
       name: data?.name || "",
       email: data?.email || "",
-      password: "******" || "",
+      password: data?.password ? "******" : "",
+      workingHours: data?.workingHours || "",
       hourlyRate: data?.hourlyRate || "",
       position: data?.position || "",
       category: data?.category || "",
@@ -41,6 +42,7 @@ const AddEmployee = ({ data, close }) => {
       hourlyRate: (value) => (!value ? "Enter hourly rate" : null),
       position: (value) => (!value ? "Select position" : null),
       category: (value) => (!value ? "Select Category" : null),
+      workingHours: (value) => (!value ? "Enter working hours" : null),
     },
   });
 
@@ -63,13 +65,14 @@ const AddEmployee = ({ data, close }) => {
 
   const handleSubmit = async (values) => {
     let res;
-    if (data) {
+    if (data?._id) {
       const payload = {
         id: data?._id,
         name: values?.name,
         email: values?.email,
         hourlyRate: values?.hourlyRate,
         position: values?.position,
+        workingHours: values?.workingHours,
         category: values?.category,
       };
       res = await dispatch(updateEmployee(payload));
@@ -79,22 +82,25 @@ const AddEmployee = ({ data, close }) => {
         email: values?.email,
         password: values?.password,
         hourlyRate: values?.hourlyRate,
+        workingHours: values?.workingHours,
         position: values?.position,
         category: values?.category,
       };
       res = await dispatch(addEmployee(data));
     }
-    if (res) {
+
+    if (!res?.error?.message) {
       await dispatch(
         getEmployee({
           category: "all",
           search: "",
           sort: "",
-          page: 1,
+          page: 0,
+          limit: 10,
           sortDirection: "asc",
         })
       );
-      close();
+      // close();
     }
   };
 
@@ -102,7 +108,7 @@ const AddEmployee = ({ data, close }) => {
     <div>
       <div className="p-6 bg-[#FFFEF9] border-b border-[#E9E0C380]">
         <p className="text-2xl font-semibold font-outfit text-zinc-800">
-          {data ? "Edit" : "Add"} Employee
+          {data?.name ? "Edit" : "Add"} Employee
         </p>
         <p className="text-sm text-slate-400 font-outfit font-thin">
           Enter employee details for easy tracking.
@@ -176,41 +182,18 @@ const AddEmployee = ({ data, close }) => {
             {...form.getInputProps("name")}
           />
           <TextInput
-            readOnly={data && true}
-            disabled={data && true}
+            readOnly={data?.email && true}
+            disabled={data?.email && true}
             label="Email"
             placeholder="Enter Email"
             {...form.getInputProps("email")}
           />
           <PasswordInput
-            readOnly={data && true}
-            disabled={data && true}
+            readOnly={data?.password && true}
+            disabled={data?.password && true}
             label="Password"
             placeholder="Enter Password"
             {...form.getInputProps("password")}
-          />
-          <NumberInput
-            hideControls
-            leftSection={
-              <div className="bg-slate-200 p-2 rounded-lg">
-                {" "}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="12"
-                  height="16"
-                  fill="none"
-                  viewBox="0 0 11 21"
-                >
-                  <path
-                    fill="#2C2C2F"
-                    d="M5.38 18.22q-1.672 0-2.926-.66-1.232-.66-2.2-1.914L1.64 14.26q.705.99 1.628 1.562.924.572 2.178.572 1.342 0 2.156-.616.836-.616.836-1.716 0-.858-.396-1.386a2.9 2.9 0 0 0-1.056-.858 9.4 9.4 0 0 0-1.452-.616 70 70 0 0 1-1.584-.594 8 8 0 0 1-1.43-.792 3.5 3.5 0 0 1-1.056-1.254q-.396-.77-.396-1.936 0-1.298.616-2.2A4.06 4.06 0 0 1 3.4 3.018q1.078-.506 2.42-.506 1.386 0 2.53.594a5.5 5.5 0 0 1 1.892 1.518L8.856 6.01q-.682-.792-1.43-1.232a3.2 3.2 0 0 0-1.65-.44q-1.275 0-2.002.55t-.726 1.606q0 .77.396 1.254.418.462 1.078.792.683.33 1.452.616.792.264 1.584.594.814.33 1.474.836.66.505 1.056 1.32.418.792.418 2.002 0 2.024-1.386 3.168T5.38 18.22m-.308 1.98V.532h1.452V20.2z"
-                  ></path>
-                </svg>
-              </div>
-            }
-            label="Hourly Rate"
-            placeholder="00"
-            {...form.getInputProps("hourlyRate")}
           />
           <Select
             label="Position"
@@ -250,11 +233,46 @@ const AddEmployee = ({ data, close }) => {
               </svg>
             }
             data={[
-              { value: "contact", label: "Contact Base" },
-              { value: "hourly", label: "Hourly Tabs" },
+              { value: "contract base", label: "Contact Base" },
+              { value: "hourly rate", label: "Hourly Tabs" },
               { value: "full time", label: "Full Time Employee" },
             ]}
             {...form.getInputProps("category")}
+          />
+          <NumberInput
+            hideControls
+            leftSection={
+              <div className="bg-slate-200 p-2 rounded-lg">
+                {" "}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="12"
+                  height="16"
+                  fill="none"
+                  viewBox="0 0 11 21"
+                >
+                  <path
+                    fill="#2C2C2F"
+                    d="M5.38 18.22q-1.672 0-2.926-.66-1.232-.66-2.2-1.914L1.64 14.26q.705.99 1.628 1.562.924.572 2.178.572 1.342 0 2.156-.616.836-.616.836-1.716 0-.858-.396-1.386a2.9 2.9 0 0 0-1.056-.858 9.4 9.4 0 0 0-1.452-.616 70 70 0 0 1-1.584-.594 8 8 0 0 1-1.43-.792 3.5 3.5 0 0 1-1.056-1.254q-.396-.77-.396-1.936 0-1.298.616-2.2A4.06 4.06 0 0 1 3.4 3.018q1.078-.506 2.42-.506 1.386 0 2.53.594a5.5 5.5 0 0 1 1.892 1.518L8.856 6.01q-.682-.792-1.43-1.232a3.2 3.2 0 0 0-1.65-.44q-1.275 0-2.002.55t-.726 1.606q0 .77.396 1.254.418.462 1.078.792.683.33 1.452.616.792.264 1.584.594.814.33 1.474.836.66.505 1.056 1.32.418.792.418 2.002 0 2.024-1.386 3.168T5.38 18.22m-.308 1.98V.532h1.452V20.2z"
+                  ></path>
+                </svg>
+              </div>
+            }
+            label={
+              form?.values?.category === "contract base"
+                ? "Contract Base Salary"
+                : form?.values?.category === "hourly rate"
+                ? "Hourly Rate"
+                : "Full time Salary"
+            }
+            placeholder="00"
+            {...form.getInputProps("hourlyRate")}
+          />
+          <NumberInput
+            hideControls
+            label={"Working Hours (weekly)"}
+            placeholder="00"
+            {...form.getInputProps("workingHours")}
           />
         </div>
         <Divider />

@@ -1,4 +1,4 @@
-import { Avatar, Button } from "@mantine/core";
+import { Avatar, Button, Loader } from "@mantine/core";
 import { useEffect, useMemo } from "react";
 import CommonDataTable from "../components/common/DataTable";
 import { DateInput } from "@mantine/dates";
@@ -8,17 +8,18 @@ import { useDisclosure } from "@mantine/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import { getSingleEmployee } from "../redux/slices/employee/thunks";
 import { useParams } from "react-router-dom";
+import { getSingleEmployeeActivity } from "../redux/slices/activity/thunks";
 const EmployeeActivity = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const { singleEmployee } = useSelector((state) => state?.employee);
-  console.log(singleEmployee);
+  const { activity } = useSelector((state) => state?.activity);
+  console.log(activity);
 
   useEffect(() => {
     if (id) {
-      dispatch(getSingleEmployee(id));
+      dispatch(getSingleEmployeeActivity({ id }));
     }
   }, [id]);
 
@@ -140,7 +141,7 @@ const EmployeeActivity = () => {
   const columns = useMemo(
     () => [
       {
-        accessorKey: "date", //access nested data with dot notation
+        accessorKey: "createdAt", //access nested data with dot notation
         header: "Date",
         size: 25,
         Cell: ({ cell }) => {
@@ -150,7 +151,7 @@ const EmployeeActivity = () => {
         },
       },
       {
-        accessorKey: "checkIn",
+        accessorKey: "checkin",
         header: "Check-In",
         size: 25,
         Cell: ({ cell }) => {
@@ -160,7 +161,7 @@ const EmployeeActivity = () => {
         },
       },
       {
-        accessorKey: "checkOut", //normal accessorKey
+        accessorKey: "checkout", //normal accessorKey
         header: "Check-Out",
         size: 25,
         Cell: ({ cell }) => {
@@ -170,7 +171,7 @@ const EmployeeActivity = () => {
         },
       },
       {
-        accessorKey: "break",
+        accessorKey: "totalBreak",
         header: "Break Time",
         size: "25",
         Cell: ({ cell }) => {
@@ -180,7 +181,7 @@ const EmployeeActivity = () => {
         },
       },
       {
-        accessorKey: "total",
+        accessorKey: "totalHours",
         header: "Total Work Hours",
         Cell: ({ cell }) => {
           return (
@@ -204,13 +205,13 @@ const EmployeeActivity = () => {
     <div>
       <div className="flex justify-between items-center flex-wrap">
         <div className="flex items-center gap-2">
-          <Avatar size={"xl"}> {singleEmployee?.data?.name[0]}</Avatar>
+          <Avatar size={"xl"}> {activity?.data[0]?.user?.name[0]}</Avatar>
           <div>
             <p className="font-bold text-lg xl:text-xl text-zinc-800 font-outfit capitalize">
-              {singleEmployee?.data?.name}
+              {activity?.data[0]?.user?.name}
             </p>
             <p className="text-slate-400 text-sm xl:text-lg font-outfit">
-              {singleEmployee?.data?.email}
+              {activity?.data[0]?.user?.email}
             </p>
           </div>
         </div>
@@ -281,7 +282,36 @@ const EmployeeActivity = () => {
       </div>
 
       <div className="mt-4">
-        <CommonDataTable data={data} columns={columns} />
+        {false ? (
+          <div className="h-[60vh] flex justify-center items-center">
+            <Loader type="dots" size="xl" color="dark" />
+          </div>
+        ) : activity?.data?.length > 0 ? (
+          <div className="mt-4">
+            <CommonDataTable
+              data={activity?.data}
+              columns={columns}
+              // handleSorting={handleSorting}
+              // isLoading={loading}
+              // sort={{ id: filter?.sort, desc: filter?.sortDirection }}
+              // handlePagination={handlePagination}
+              pagination={{
+                pageIndex: 0,
+                pageSize: 10,
+              }}
+              totalCount={data?.length}
+            />
+          </div>
+        ) : (
+          <div className="h-[60vh] flex justify-center items-center">
+            <div>
+              <p className="text-2xl font-semibold font-outfit text-center">
+                No employees found!
+              </p>
+              <p className="font-outfit">There are no employees found yet</p>
+            </div>
+          </div>
+        )}
       </div>
       <DrawerComponent
         opened={opened}

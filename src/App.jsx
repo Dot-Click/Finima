@@ -11,9 +11,7 @@ function App() {
     dispatch(me());
     // const res2 = await custAxios.get("/auth/me");
   };
-  useEffect(() => {
-    foo();
-  }, []);
+
   return (
     <BrowserRouter>
       <Router />
