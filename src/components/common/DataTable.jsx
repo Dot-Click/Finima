@@ -6,7 +6,7 @@ const CommonDataTable = ({
   data,
   columns,
   handleSorting,
-  // sort,
+  sort,
   totalCount,
   handlePagination,
   pagination,
@@ -14,18 +14,16 @@ const CommonDataTable = ({
   // pagination = true,
   selection = true,
 }) => {
-  const [sort, setSort] = useState([]);
-  console.log(sort, "sort");
   const table = useMantineReactTable({
     columns,
     data,
-    enableRowSelection: selection,
+    // enableRowSelection: selection,
     enableColumnActions: false,
     enableColumnFilters: false,
     // enablePagination: pagination,
     enableSorting: true,
     // manualSorting: true,
-    state: { pagination, sort },
+    state: { isLoading: isLoading, showSkeletons: isLoading, pagination, sort },
     // paginationDisplayMode: "pages",
 
     // onSortingChange: setSort,

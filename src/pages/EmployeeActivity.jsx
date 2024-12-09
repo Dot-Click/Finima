@@ -1,5 +1,5 @@
 import { Avatar, Button, Loader } from "@mantine/core";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import CommonDataTable from "../components/common/DataTable";
 import { DateInput } from "@mantine/dates";
 import DrawerComponent from "../components/common/Drawer";
@@ -9,19 +9,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSingleEmployee } from "../redux/slices/employee/thunks";
 import { useParams } from "react-router-dom";
 import { getSingleEmployeeActivity } from "../redux/slices/activity/thunks";
+import moment from "moment";
 const EmployeeActivity = () => {
   const [opened, { open, close }] = useDisclosure(false);
+  const [logs, setLogs] = useState();
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const { activity } = useSelector((state) => state?.activity);
-  console.log(activity);
+  const [filter, setFilter] = useState({
+    sort: "",
+    page: 0,
+    limit: 10,
+    sortDirection: "asc",
+  });
+
+  const { activity, loading } = useSelector((state) => state?.activity);
 
   useEffect(() => {
     if (id) {
-      dispatch(getSingleEmployeeActivity({ id }));
+      dispatch(getSingleEmployeeActivity({ id, ...filter }));
     }
-  }, [id]);
+  }, [id, filter]);
 
   const data = [
     {
@@ -137,6 +145,30 @@ const EmployeeActivity = () => {
       action: "10",
     },
   ];
+  const handelViewLogs = async (row) => {
+    await setLogs(row);
+    open();
+  };
+
+  const handleSorting = (e) => {
+    const res = e();
+
+    setFilter((prev) => ({
+      ...prev,
+      sort: res[0]?.id,
+      sortDirection: prev.sortDirection === "asc" ? "dsc" : "asc",
+    }));
+    return res;
+  };
+
+  const handlePagination = (e) => {
+    const res = e(filter.page);
+    setFilter((prev) => ({
+      ...prev,
+      page: Number.isNaN(res?.pageIndex) ? prev?.page : res?.pageIndex,
+      limit: res?.pageSize || 10,
+    }));
+  };
 
   const columns = useMemo(
     () => [
@@ -146,7 +178,9 @@ const EmployeeActivity = () => {
         size: 25,
         Cell: ({ cell }) => {
           return (
-            <div className="text-zinc-700 font-outfit">{cell.getValue()}</div>
+            <div className="text-zinc-700 font-outfit">
+              {moment(cell.getValue()).format("DD/MMM/YYYY")}
+            </div>
           );
         },
       },
@@ -156,7 +190,9 @@ const EmployeeActivity = () => {
         size: 25,
         Cell: ({ cell }) => {
           return (
-            <div className="text-zinc-700 font-outfit">{cell.getValue()}</div>
+            <div className="text-zinc-700 font-outfit">
+              {moment(cell.getValue()).format("LT")}
+            </div>
           );
         },
       },
@@ -166,7 +202,9 @@ const EmployeeActivity = () => {
         size: 25,
         Cell: ({ cell }) => {
           return (
-            <div className="text-zinc-700 font-outfit">{cell.getValue()}</div>
+            <div className="text-zinc-700 font-outfit">
+              {moment(cell.getValue()).format("LT")}
+            </div>
           );
         },
       },
@@ -176,7 +214,9 @@ const EmployeeActivity = () => {
         size: "25",
         Cell: ({ cell }) => {
           return (
-            <div className="text-zinc-700 font-outfit">{cell.getValue()}</div>
+            <div className="text-zinc-700 font-outfit">
+              {Math.ceil(cell.getValue())}
+            </div>
           );
         },
       },
@@ -185,7 +225,9 @@ const EmployeeActivity = () => {
         header: "Total Work Hours",
         Cell: ({ cell }) => {
           return (
-            <div className="text-zinc-700 font-outfit">{cell.getValue()}</div>
+            <div className="text-zinc-700 font-outfit">
+              {Math.ceil(cell.getValue())}
+            </div>
           );
         },
       },
@@ -195,7 +237,15 @@ const EmployeeActivity = () => {
         size: 20,
         enableSorting: false,
         Cell: ({ cell }) => {
-          return <Button onClick={open}>View Log</Button>;
+          return (
+            <Button
+              onClick={() => {
+                handelViewLogs(cell?.row?.original);
+              }}
+            >
+              View Log
+            </Button>
+          );
         },
       },
     ],
@@ -205,13 +255,16 @@ const EmployeeActivity = () => {
     <div>
       <div className="flex justify-between items-center flex-wrap">
         <div className="flex items-center gap-2">
-          <Avatar size={"xl"}> {activity?.data[0]?.user?.name[0]}</Avatar>
+          <Avatar size={"xl"}>
+            {" "}
+            {activity?.data[0]?.activity[0]?.user[0]?.name[0]}
+          </Avatar>
           <div>
             <p className="font-bold text-lg xl:text-xl text-zinc-800 font-outfit capitalize">
-              {activity?.data[0]?.user?.name}
+              {activity?.data[0]?.activity[0]?.user[0]?.name}
             </p>
             <p className="text-slate-400 text-sm xl:text-lg font-outfit">
-              {activity?.data[0]?.user?.email}
+              {activity?.data[0]?.activity[0]?.user[0]?.email}
             </p>
           </div>
         </div>
@@ -249,7 +302,9 @@ const EmployeeActivity = () => {
                 d="M12.222 11.04H5.048A3.55 3.55 0 0 1 1.5 7.491M5.048 3.865v8.357M14.587 3.865v4.81"
               ></path>
             </svg>
-            <p className="font-outfit">Contract</p>
+            <p className="font-outfit capitalize">
+              {activity?.data[0]?.activity[0]?.user[0]?.category}
+            </p>
           </div>
           <DateInput
             w={"auto"}
@@ -282,24 +337,25 @@ const EmployeeActivity = () => {
       </div>
 
       <div className="mt-4">
-        {false ? (
-          <div className="h-[60vh] flex justify-center items-center">
-            <Loader type="dots" size="xl" color="dark" />
-          </div>
-        ) : activity?.data?.length > 0 ? (
+        {activity?.data[0]?.activity?.length > 0 ? (
           <div className="mt-4">
             <CommonDataTable
-              data={activity?.data}
+              data={activity?.data[0]?.activity}
               columns={columns}
-              // handleSorting={handleSorting}
-              // isLoading={loading}
-              // sort={{ id: filter?.sort, desc: filter?.sortDirection }}
-              // handlePagination={handlePagination}
+              isLoading={loading}
+              handleSorting={handleSorting}
+              sort={[
+                {
+                  id: filter?.sort,
+                  desc: filter?.sortDirection === "asc" ? true : false,
+                },
+              ]}
+              handlePagination={handlePagination}
               pagination={{
-                pageIndex: 0,
-                pageSize: 10,
+                pageIndex: filter?.page,
+                pageSize: filter?.limit,
               }}
-              totalCount={data?.length}
+              totalCount={activity?.data[0]?.totalDocs?.count}
             />
           </div>
         ) : (
@@ -318,7 +374,7 @@ const EmployeeActivity = () => {
         close={close}
         size={"xl"}
         position={"right"}
-        content={<TodayActivity close={close} />}
+        content={<TodayActivity close={close} logs={logs} />}
       />
     </div>
   );

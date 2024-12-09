@@ -16,7 +16,7 @@ import {
 } from "../../redux/slices/employee/thunks";
 import { useEffect } from "react";
 
-const AddEmployee = ({ data, close }) => {
+const AddEmployee = ({ data, close, filter }) => {
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state?.employee);
   console.log(data);
@@ -90,17 +90,8 @@ const AddEmployee = ({ data, close }) => {
     }
 
     if (!res?.error?.message) {
-      await dispatch(
-        getEmployee({
-          category: "all",
-          search: "",
-          sort: "",
-          page: 0,
-          limit: 10,
-          sortDirection: "asc",
-        })
-      );
-      // close();
+      await dispatch(getEmployee(filter));
+      close();
     }
   };
 

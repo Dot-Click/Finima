@@ -5,9 +5,9 @@ export const getSingleEmployeeActivity = createAsyncThunk(
   "activity/employee/:id",
   async (payload, { rejectWithValue }) => {
     try {
-      console.log(payload);
-
-      const res = await custAxios.get(`activity/employee/${payload?.id}`);
+      const res = await custAxios.get(`activity/employee/${payload?.id}`, {
+        params: { ...payload },
+      });
 
       if (res?.data?.success === true) {
         return res.data; // Return data (e.g., user info, token, etc.)

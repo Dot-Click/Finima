@@ -13,7 +13,7 @@ const authSlice = createSlice({
     // Additional reducers can be added here if needed
   },
   extraReducers: (builder) => {
-    // Both login and register pending state handlers can be written separately
+    // Both login pending state handlers can be written separately
     builder
       .addCase(login.pending, (state) => {
         state.loading = true;

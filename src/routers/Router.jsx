@@ -15,6 +15,7 @@ import EmployeeActivity from "../pages/EmployeeActivity";
 import Payroll from "../pages/Payroll";
 import TodayActivity from "../pages/TodayActivity";
 import Settings from "../pages/Settings";
+import AdminRoute from "./AdminRoute";
 
 const Router = () => {
   // use protected routes for authenticated users (i.e: UserRoute & AdminRoute or make more if you've to)..
@@ -23,18 +24,27 @@ const Router = () => {
     <Routes>
       {/* Default Layout routes */}
       <Route path="/dashboard" element={<DashboardLayout />}>
-        <Route path="/dashboard" element={<Home />} />
+        <Route path="/dashboard" element={<AdminRoute Component={Home} />} />
         <Route
           path="/dashboard/employee-management"
-          element={<EmployeeManagement />}
+          element={<AdminRoute Component={EmployeeManagement} />}
         />
         <Route
           path="/dashboard/employee-activity/:id"
-          element={<EmployeeActivity />}
+          element={<AdminRoute Component={EmployeeActivity} />}
         />
-        <Route path="/dashboard/payroll" element={<Payroll />} />
-        <Route path="/dashboard/today-activity" element={<TodayActivity />} />
-        <Route path="/dashboard/settings" element={<Settings />} />
+        <Route
+          path="/dashboard/payroll"
+          element={<AdminRoute Component={Payroll} />}
+        />
+        <Route
+          path="/dashboard/today-activity"
+          element={<AdminRoute Component={TodayActivity} />}
+        />
+        <Route
+          path="/dashboard/settings"
+          element={<AdminRoute Component={Settings} />}
+        />
       </Route>
 
       {/* Auth routes */}

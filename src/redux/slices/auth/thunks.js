@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import custAxios from "../../../configs/axiosConfig";
-
+import Cookies from "js-cookie";
 export const login = createAsyncThunk(
   "auth/login",
   async (payload, { rejectWithValue }) => {
@@ -18,6 +18,7 @@ export const login = createAsyncThunk(
       );
 
       if (res?.data?.success === true) {
+        Cookies.set("user_id", res?.data?.user?._id);
         localStorage.setItem("user", JSON.stringify(res?.data?.user));
         return res.data; // Return data (e.g., user info, token, etc.)
       } else {
@@ -75,7 +76,7 @@ export const logout = createAsyncThunk(
     try {
       const res = await custAxios.get("/auth/logout");
       if (res?.data?.success === true) {
-        console.log(res);
+        Cookies?.remove("user_id");
 
         return res.data; // Return data (e.g., user info, token, etc.)
       } else {

@@ -8,7 +8,7 @@ export const getEmployee = createAsyncThunk(
       const res = await custAxios.get("/employee", {
         params: payload,
       });
-      console.log(res);
+
       if (res?.data) {
         return res.data; // Return data (e.g., user info, token, etc.)
       } else {
@@ -86,6 +86,23 @@ export const activateDeactivateEmployee = createAsyncThunk(
         return res.data; // Return data (e.g., user info, token, etc.)
       } else {
         return rejectWithValue("Request failed");
+      }
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "Login failed");
+    }
+  }
+);
+
+export const getPayroll = createAsyncThunk(
+  "employee/payroll",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await custAxios.get(`/payroll`);
+
+      if (res?.data) {
+        return res.data; // Return data (e.g., user info, token, etc.)
+      } else {
+        return rejectWithValue("Payroll not found");
       }
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "Login failed");

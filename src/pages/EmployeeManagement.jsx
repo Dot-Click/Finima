@@ -20,6 +20,7 @@ import {
   getEmployee,
   activateDeactivateEmployee,
 } from "../redux/slices/employee/thunks";
+import Cookies from "js-cookie";
 const EmployeeManagement = () => {
   const dispatch = useDispatch();
   const { employees, loading } = useSelector((state) => state.employee);
@@ -45,7 +46,6 @@ const EmployeeManagement = () => {
   };
 
   const handleActivateDeactivateEmployee = async (id) => {
-    console.log(id);
     const res = await dispatch(activateDeactivateEmployee(id));
     if (res) {
       handleApiCall();
@@ -55,105 +55,6 @@ const EmployeeManagement = () => {
   useEffect(() => {
     handleApiCall();
   }, [filter]);
-
-  const data = [
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "working",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "on break",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "checked out",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "unavailable",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "working",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "on break",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "checked out",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "working",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "working",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "on break",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "checked out",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "working",
-      action: "10",
-    },
-  ];
 
   const handleSorting = (e) => {
     const res = e();
@@ -173,7 +74,6 @@ const EmployeeManagement = () => {
       page: Number.isNaN(res?.pageIndex) ? prev?.page : res?.pageIndex,
       limit: res?.pageSize || 10,
     }));
-    console.log(res);
   };
 
   const handelEditEmployee = async (row) => {
@@ -232,6 +132,7 @@ const EmployeeManagement = () => {
       {
         accessorKey: "hourlyRate",
         header: "Pay",
+        size: 10,
         Cell: ({ cell }) => {
           return (
             <div className="text-zinc-700 font-outfit">${cell.getValue()}</div>
@@ -316,7 +217,6 @@ const EmployeeManagement = () => {
     ],
     []
   );
-  console.log(editData);
   return (
     <div>
       <Tabs
@@ -344,7 +244,7 @@ const EmployeeManagement = () => {
               data={[
                 { value: "all", label: "All Employees" },
                 { value: "contact", label: "Contact Base" },
-                { value: "hourly", label: "Hourly Tabs" },
+                { value: "hourly rate", label: "Hourly Tabs" },
                 { value: "full time", label: "Full Time Employee" },
               ]}
               onChange={(value) =>
@@ -464,7 +364,7 @@ const EmployeeManagement = () => {
         opened={opened}
         close={close}
         position={"right"}
-        content={<AddEmployee data={editData} close={close} />}
+        content={<AddEmployee data={editData} close={close} filter={filter} />}
       />
     </div>
   );

@@ -5,6 +5,7 @@ import {
   updateEmployee,
   getSingleEmployee,
   activateDeactivateEmployee,
+  getPayroll,
 } from "./thunks";
 import { toast } from "sonner";
 // import { successMessage } from "../../../services/helpers/index";
@@ -40,6 +41,10 @@ const employeeSlice = createSlice({
         state.error = null;
       })
       .addCase(activateDeactivateEmployee.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getPayroll.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
@@ -88,6 +93,14 @@ const employeeSlice = createSlice({
         );
       })
       .addCase(activateDeactivateEmployee.rejected, (state, action) => {
+        state.loading = false;
+        toast.success(state.error || "Whoops! something went wrong");
+      })
+      // getPayroll action handlers
+      .addCase(getPayroll.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(getPayroll.rejected, (state, action) => {
         state.loading = false;
         toast.success(state.error || "Whoops! something went wrong");
       });

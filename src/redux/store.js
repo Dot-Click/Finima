@@ -26,13 +26,23 @@ import counterSlice from "./slices/counter";
 import authSlice from "./slices/auth/auth";
 import employeeSlice from "./slices/employee/employee";
 import activitySlice from "./slices/activity/activity";
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+const persistConfig = {
+  key: "auth",
+  storage,
+  // whitelist: ["auth"], // Only persist the 'user' slice
+};
+const persistedAuthReducer = persistReducer(persistConfig, authSlice);
 export const store = configureStore({
   reducer: {
     counter: counterSlice,
-    auth: authSlice,
+    auth: persistedAuthReducer,
     employee: employeeSlice,
     activity: activitySlice,
   },
 });
 
+export const persistor = persistStore(store);
 export default store;
