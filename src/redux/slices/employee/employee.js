@@ -66,6 +66,7 @@ const employeeSlice = createSlice({
       })
       .addCase(addEmployee.rejected, (state, action) => {
         state.addUpdateLoading = false;
+        toast.error(action.payload || "Employee didn't created");
       })
       // updateEmployee action handlers
       .addCase(updateEmployee.fulfilled, (state, action) => {
@@ -74,6 +75,7 @@ const employeeSlice = createSlice({
       })
       .addCase(updateEmployee.rejected, (state, action) => {
         state.loading = false;
+        toast.error(action.payload || "Employee didn't updated");
       })
       // getSingleEmployee action handlers
       .addCase(getSingleEmployee.fulfilled, (state, action) => {
@@ -94,7 +96,8 @@ const employeeSlice = createSlice({
       })
       .addCase(activateDeactivateEmployee.rejected, (state, action) => {
         state.loading = false;
-        toast.success(state.error || "Whoops! something went wrong");
+
+        toast.error(action.payload || "Account status didn't changed");
       })
       // getPayroll action handlers
       .addCase(getPayroll.fulfilled, (state, action) => {
@@ -102,7 +105,7 @@ const employeeSlice = createSlice({
       })
       .addCase(getPayroll.rejected, (state, action) => {
         state.loading = false;
-        toast.success(state.error || "Whoops! something went wrong");
+        toast.error(action.payload || "Whoops! something went wrong");
       });
   },
 });

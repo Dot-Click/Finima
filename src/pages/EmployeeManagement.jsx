@@ -20,7 +20,6 @@ import {
   getEmployee,
   activateDeactivateEmployee,
 } from "../redux/slices/employee/thunks";
-import Cookies from "js-cookie";
 const EmployeeManagement = () => {
   const dispatch = useDispatch();
   const { employees, loading } = useSelector((state) => state.employee);
@@ -61,7 +60,7 @@ const EmployeeManagement = () => {
 
     setFilter((prev) => ({
       ...prev,
-      sort: res[0]?.id,
+      sort: res[0]?.id || prev.sort,
       sortDirection: prev.sortDirection === "asc" ? "dsc" : "asc",
     }));
     return res;
