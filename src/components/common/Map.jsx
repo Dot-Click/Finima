@@ -7,7 +7,7 @@ const Map = () => {
      <div className="">
         <img
           src="https://img.freepik.com/free-photo/man-painting-walls-yellow_53876-146573.jpg"
-          alt="sun"
+          alt="user"
           class="profile relative  z-10 left-[-12px] bottom-[2px] h-14 !w-14 aspect-square object-cover border-4 border-white bg-white rounded-full hover:border-blue-500"
         />
          <div className="  h-8 w-8 bg-blue-500  rotate-45"></div>
