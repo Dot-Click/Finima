@@ -179,7 +179,7 @@ const EmployeeActivity = () => {
         Cell: ({ cell }) => {
           return (
             <div className="text-zinc-700 font-outfit">
-              {moment(cell.getValue()).format("DD/MMM/YYYY")}
+              {moment(cell.getValue()).format("DD/MMM/YYYY") || "-"}
             </div>
           );
         },
@@ -191,7 +191,7 @@ const EmployeeActivity = () => {
         Cell: ({ cell }) => {
           return (
             <div className="text-zinc-700 font-outfit">
-              {moment(cell.getValue()).format("LT")}
+              {moment(cell.getValue()).format("LT") || "-"}
             </div>
           );
         },
@@ -203,7 +203,7 @@ const EmployeeActivity = () => {
         Cell: ({ cell }) => {
           return (
             <div className="text-zinc-700 font-outfit">
-              {moment(cell.getValue()).format("LT")}
+              {moment(cell.getValue()).format("LT") || "-"}
             </div>
           );
         },
@@ -215,7 +215,7 @@ const EmployeeActivity = () => {
         Cell: ({ cell }) => {
           return (
             <div className="text-zinc-700 font-outfit">
-              {Math.ceil(cell.getValue())}
+              {Math.ceil(cell.getValue()) + " Mins" || "-"}
             </div>
           );
         },
@@ -226,7 +226,11 @@ const EmployeeActivity = () => {
         Cell: ({ cell }) => {
           return (
             <div className="text-zinc-700 font-outfit">
-              {Math.ceil(cell.getValue())}
+              {Math.ceil(cell.getValue()) + " Mins"}
+              {/* {moment
+                .duration(Math.ceil(cell.getValue()), "minutes")
+                .asHours()
+                .toFixed(2) + ` (${Math.ceil(cell.getValue())} Mins)` || "-"} */}
             </div>
           );
         },
