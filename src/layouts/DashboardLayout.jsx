@@ -1,9 +1,9 @@
-import { useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import SideBar from "../components/layout/SideBar";
 import Navbar from "../components/layout/Navbar";
 import { useDisclosure } from "@mantine/hooks";
-import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+
 const DashboardLayout = () => {
   const location = useLocation();
   const [opened, { toggle }] = useDisclosure();

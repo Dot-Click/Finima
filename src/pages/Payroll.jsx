@@ -1,10 +1,19 @@
 import { Button } from "@mantine/core";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import CommonDataTable from "../components/common/DataTable";
 import { MonthPickerInput } from "@mantine/dates";
 import { CSVLink } from "react-csv";
+import { getPayroll } from "../redux/slices/employee/thunks";
+import { useDispatch } from "react-redux";
 
 const Payroll = () => {
+  const dispatch = useDispatch();
+  const handleApiCall = async () => {
+    await dispatch(getPayroll());
+  };
+  useEffect(() => {
+    handleApiCall();
+  }, []);
   const csvData = [
     [
       "SNo",

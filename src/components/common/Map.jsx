@@ -6,11 +6,11 @@ const Map = () => {
     html: `
      <div className="">
         <img
-          src="https://s3-alpha-sig.figma.com/img/b5bb/1dd6/cf2dcb99654a76e152bcc48e9be1b877?Expires=1733702400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=FCACS8QydFQhaZsLuOA~U26OesZZEGJl1shda9jM2EKLOxMymlyf87ecPlzE7IjDWo0MPDbqY2fBjiCo6wS-g4Gnyp0ygMgFk0fyhkCKYxBoBYpC2SyBtzPb~rDBax0dmvpt4D4vXBZO0xGp~~-lMt7VNfqtGZM74h3BoH6L7FjJn9KcQg~80Fn1G1~krhBi-hBoTs4N11JRyA-FDvWmM2yej0W8haJv4QXd2a8EJS2Ytfb5KXzKv~6aA01AyHqXBABx5JIf7f1NpdXeEJoxWaYqCzpkXceylwNXBhn01qvAQ-uKDkWh3xnKOhb731RiqkB0p5V3pJ4oFMBCe3OM2Q__"
+          src="https://img.freepik.com/free-photo/man-painting-walls-yellow_53876-146573.jpg"
           alt="sun"
           class="profile relative  z-10 left-[-12px] bottom-[2px] h-14 !w-14 aspect-square object-cover border-4 border-white bg-white rounded-full hover:border-blue-500"
         />
-        // <div className="  h-8 w-8 bg-blue-500  rotate-45"></div>
+         <div className="  h-8 w-8 bg-blue-500  rotate-45"></div>
       </div>`,
     iconSize: [20, 20], // Total size of the icon (including arrow)
     iconAnchor: [15, 60], // Position of the anchor point

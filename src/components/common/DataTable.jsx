@@ -1,21 +1,35 @@
 import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
+import { useState } from "react";
 
 //nested data is ok, see accessorKeys in ColumnDef below
 const CommonDataTable = ({
   data,
   columns,
-  pagination = true,
+  handleSorting,
+  sort,
+  totalCount,
+  handlePagination,
+  pagination,
+  isLoading,
+  // pagination = true,
   selection = true,
 }) => {
   const table = useMantineReactTable({
     columns,
     data,
-    enableRowSelection: selection,
+    // enableRowSelection: selection,
     enableColumnActions: false,
     enableColumnFilters: false,
-    enablePagination: pagination,
+    // enablePagination: pagination,
     enableSorting: true,
+    // manualSorting: true,
+    state: { isLoading: isLoading, showSkeletons: isLoading, pagination, sort },
+    // paginationDisplayMode: "pages",
 
+    // onSortingChange: setSort,
+    onSortingChange: handleSorting,
+    manualPagination: true,
+    rowCount: totalCount,
     paginationDisplayMode: "pages",
     mantinePaginationProps: {
       marginBotton: "40px",
@@ -23,13 +37,10 @@ const CommonDataTable = ({
     positionToolbarAlertBanner: "bottom",
     mantinePaginationProps: {
       color: "dark",
-      // total: totalMembers,
-      // page: pagination.pageIndex,  // Current page index
-      // onChange: (page) => {
-      //     console.log('page ', page)
-      //     setPagination((prev) => ({ ...prev, pageIndex: (page - 1) }))
-      // },
+      rowsPerPageOptions: ["5", "10"],
+      withEdges: false,
     },
+    onPaginationChange: handlePagination,
 
     mantineTopToolbarProps: {
       style: {

@@ -1,13 +1,35 @@
-import { Avatar, Button } from "@mantine/core";
-import { useMemo } from "react";
+import { Avatar, Button, Loader } from "@mantine/core";
+import { useEffect, useMemo, useState } from "react";
 import CommonDataTable from "../components/common/DataTable";
 import { DateInput } from "@mantine/dates";
 import DrawerComponent from "../components/common/Drawer";
 import TodayActivity from "../components/modalContent/TodayActivity";
 import { useDisclosure } from "@mantine/hooks";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getSingleEmployee } from "../redux/slices/employee/thunks";
+import { useParams } from "react-router-dom";
+import { getSingleEmployeeActivity } from "../redux/slices/activity/thunks";
+import moment from "moment";
 const EmployeeActivity = () => {
   const [opened, { open, close }] = useDisclosure(false);
+  const [logs, setLogs] = useState();
+  const dispatch = useDispatch();
+  const { id } = useParams();
+
+  const [filter, setFilter] = useState({
+    sort: "",
+    page: 0,
+    limit: 10,
+    sortDirection: "asc",
+  });
+
+  const { activity, loading } = useSelector((state) => state?.activity);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(getSingleEmployeeActivity({ id, ...filter }));
+    }
+  }, [id, filter]);
 
   const data = [
     {
@@ -123,55 +145,93 @@ const EmployeeActivity = () => {
       action: "10",
     },
   ];
+  const handelViewLogs = async (row) => {
+    await setLogs(row);
+    open();
+  };
+
+  const handleSorting = (e) => {
+    const res = e();
+
+    setFilter((prev) => ({
+      ...prev,
+      sort: res[0]?.id,
+      sortDirection: prev.sortDirection === "asc" ? "dsc" : "asc",
+    }));
+    return res;
+  };
+
+  const handlePagination = (e) => {
+    const res = e(filter.page);
+    setFilter((prev) => ({
+      ...prev,
+      page: Number.isNaN(res?.pageIndex) ? prev?.page : res?.pageIndex,
+      limit: res?.pageSize || 10,
+    }));
+  };
 
   const columns = useMemo(
     () => [
       {
-        accessorKey: "date", //access nested data with dot notation
+        accessorKey: "createdAt", //access nested data with dot notation
         header: "Date",
         size: 25,
         Cell: ({ cell }) => {
           return (
-            <div className="text-zinc-700 font-outfit">{cell.getValue()}</div>
+            <div className="text-zinc-700 font-outfit">
+              {moment(cell.getValue()).format("DD/MMM/YYYY") || "-"}
+            </div>
           );
         },
       },
       {
-        accessorKey: "checkIn",
+        accessorKey: "checkin",
         header: "Check-In",
         size: 25,
         Cell: ({ cell }) => {
           return (
-            <div className="text-zinc-700 font-outfit">{cell.getValue()}</div>
+            <div className="text-zinc-700 font-outfit">
+              {moment(cell.getValue()).format("LT") || "-"}
+            </div>
           );
         },
       },
       {
-        accessorKey: "checkOut", //normal accessorKey
+        accessorKey: "checkout", //normal accessorKey
         header: "Check-Out",
         size: 25,
         Cell: ({ cell }) => {
           return (
-            <div className="text-zinc-700 font-outfit">{cell.getValue()}</div>
+            <div className="text-zinc-700 font-outfit">
+              {moment(cell.getValue()).format("LT") || "-"}
+            </div>
           );
         },
       },
       {
-        accessorKey: "break",
+        accessorKey: "totalBreak",
         header: "Break Time",
         size: "25",
         Cell: ({ cell }) => {
           return (
-            <div className="text-zinc-700 font-outfit">{cell.getValue()}</div>
+            <div className="text-zinc-700 font-outfit">
+              {Math.ceil(cell.getValue()) + " Mins" || "-"}
+            </div>
           );
         },
       },
       {
-        accessorKey: "total",
+        accessorKey: "totalHours",
         header: "Total Work Hours",
         Cell: ({ cell }) => {
           return (
-            <div className="text-zinc-700 font-outfit">{cell.getValue()}</div>
+            <div className="text-zinc-700 font-outfit">
+              {Math.ceil(cell.getValue()) + " Mins"}
+              {/* {moment
+                .duration(Math.ceil(cell.getValue()), "minutes")
+                .asHours()
+                .toFixed(2) + ` (${Math.ceil(cell.getValue())} Mins)` || "-"} */}
+            </div>
           );
         },
       },
@@ -181,7 +241,15 @@ const EmployeeActivity = () => {
         size: 20,
         enableSorting: false,
         Cell: ({ cell }) => {
-          return <Button onClick={open}>View Log</Button>;
+          return (
+            <Button
+              onClick={() => {
+                handelViewLogs(cell?.row?.original);
+              }}
+            >
+              View Log
+            </Button>
+          );
         },
       },
     ],
@@ -191,13 +259,16 @@ const EmployeeActivity = () => {
     <div>
       <div className="flex justify-between items-center flex-wrap">
         <div className="flex items-center gap-2">
-          <Avatar size={"xl"}>WJ</Avatar>
+          <Avatar size={"xl"}>
+            {" "}
+            {activity?.data[0]?.activity[0]?.user[0]?.name[0]}
+          </Avatar>
           <div>
-            <p className="font-bold text-lg xl:text-xl text-zinc-800 font-outfit">
-              Williamson Jack
+            <p className="font-bold text-lg xl:text-xl text-zinc-800 font-outfit capitalize">
+              {activity?.data[0]?.activity[0]?.user[0]?.name}
             </p>
             <p className="text-slate-400 text-sm xl:text-lg font-outfit">
-              williamsonjack@gmail.com
+              {activity?.data[0]?.activity[0]?.user[0]?.email}
             </p>
           </div>
         </div>
@@ -235,7 +306,9 @@ const EmployeeActivity = () => {
                 d="M12.222 11.04H5.048A3.55 3.55 0 0 1 1.5 7.491M5.048 3.865v8.357M14.587 3.865v4.81"
               ></path>
             </svg>
-            <p className="font-outfit">Contract</p>
+            <p className="font-outfit capitalize">
+              {activity?.data[0]?.activity[0]?.user[0]?.category}
+            </p>
           </div>
           <DateInput
             w={"auto"}
@@ -268,14 +341,44 @@ const EmployeeActivity = () => {
       </div>
 
       <div className="mt-4">
-        <CommonDataTable data={data} columns={columns} />
+        {activity?.data[0]?.activity?.length > 0 ? (
+          <div className="mt-4">
+            <CommonDataTable
+              data={activity?.data[0]?.activity}
+              columns={columns}
+              isLoading={loading}
+              handleSorting={handleSorting}
+              sort={[
+                {
+                  id: filter?.sort,
+                  desc: filter?.sortDirection === "asc" ? true : false,
+                },
+              ]}
+              handlePagination={handlePagination}
+              pagination={{
+                pageIndex: filter?.page,
+                pageSize: filter?.limit,
+              }}
+              totalCount={activity?.data[0]?.totalDocs?.count}
+            />
+          </div>
+        ) : (
+          <div className="h-[60vh] flex justify-center items-center">
+            <div>
+              <p className="text-2xl font-semibold font-outfit text-center">
+                No employees found!
+              </p>
+              <p className="font-outfit">There are no employees found yet</p>
+            </div>
+          </div>
+        )}
       </div>
       <DrawerComponent
         opened={opened}
         close={close}
         size={"xl"}
         position={"right"}
-        content={<TodayActivity close={close} />}
+        content={<TodayActivity close={close} logs={logs} />}
       />
     </div>
   );

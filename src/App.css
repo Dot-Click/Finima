@@ -121,3 +121,11 @@
 .mantine-Tooltip-tooltip {
   z-index: 9999 !important;
 }
+
+.mantine-Tabs-panel {
+  display: block !important;
+}
+
+.mantine-LoadingOverlay-loader::after {
+  border-color: #1d1d1f #1d1d1f #1d1d1f #ffffff !important;
+}

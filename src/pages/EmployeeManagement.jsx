@@ -6,131 +6,92 @@ import {
   Tabs,
   Divider,
   Select,
+  Loader,
 } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import DrawerComponent from "../components/common/Drawer";
 import CommonDataTable from "../components/common/DataTable";
 import { ChevronDown, Dot, EllipsisVertical } from "lucide-react";
 import { Link } from "react-router-dom";
 import AddEmployee from "../components/modalContent/AddEmployee";
-
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getEmployee,
+  activateDeactivateEmployee,
+} from "../redux/slices/employee/thunks";
+import Cookies from "js-cookie";
 const EmployeeManagement = () => {
+  const dispatch = useDispatch();
+  const { employees, loading } = useSelector((state) => state.employee);
   const [opened, { open, close }] = useDisclosure(false);
   const [activeTab, setActivetab] = useState("all");
   const responsive_lg = useMediaQuery("(max-width:992px )");
   const responsive_sm = useMediaQuery("(max-width:642px )");
   const responsive_xs = useMediaQuery("(max-width:412px )");
 
-  const data = [
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "working",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "on break",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "checked out",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "unavailable",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "working",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "on break",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "checked out",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "working",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "working",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "on break",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "checked out",
-      action: "10",
-    },
-    {
-      name: "John Doe",
-      email: "john@gmail.com",
-      role: "Plumber",
-      hourly: "10",
-      status: "working",
-      action: "10",
-    },
-  ];
+  const [filter, setFilter] = useState({
+    category: "all",
+    search: "",
+    sort: "",
+    page: 0,
+    limit: 10,
+    sortDirection: "asc",
+  });
 
+  const [editData, setEditData] = useState({});
+
+  const handleApiCall = async () => {
+    await dispatch(getEmployee(filter));
+  };
+
+  const handleActivateDeactivateEmployee = async (id) => {
+    const res = await dispatch(activateDeactivateEmployee(id));
+    if (res) {
+      handleApiCall();
+    }
+  };
+
+  useEffect(() => {
+    handleApiCall();
+  }, [filter]);
+
+  const handleSorting = (e) => {
+    const res = e();
+
+    setFilter((prev) => ({
+      ...prev,
+      sort: res[0]?.id,
+      sortDirection: prev.sortDirection === "asc" ? "dsc" : "asc",
+    }));
+    return res;
+  };
+
+  const handlePagination = (e) => {
+    const res = e(filter.page);
+    setFilter((prev) => ({
+      ...prev,
+      page: Number.isNaN(res?.pageIndex) ? prev?.page : res?.pageIndex,
+      limit: res?.pageSize || 10,
+    }));
+  };
+
+  const handelEditEmployee = async (row) => {
+    await setEditData(row);
+    open();
+  };
   const columns = useMemo(
     () => [
       {
         accessorKey: "name", //access nested data with dot notation
         header: "Employee Name",
-
+        enableSorting: (e) => {
+          console.log(e);
+        },
         Cell: ({ cell }) => {
           return (
             <div className="flex gap-2 items-center">
-              <Avatar>WS</Avatar>{" "}
+              <Avatar>{cell.getValue()[0]}</Avatar>{" "}
               <p className="text-zinc-700 font-outfit">{cell.getValue()}</p>
             </div>
           );
@@ -147,17 +108,31 @@ const EmployeeManagement = () => {
         },
       },
       {
-        accessorKey: "role", //normal accessorKey
-        header: "Role",
+        accessorKey: "workingHours", //normal accessorKey
+        header: "Working Hours",
         Cell: ({ cell }) => {
           return (
-            <div className="text-zinc-700 font-outfit">{cell.getValue()}</div>
+            <div className="text-zinc-700 font-outfit capitalize">
+              {cell.getValue()}
+            </div>
           );
         },
       },
       {
-        accessorKey: "hourly",
-        header: "Hourly Rate",
+        accessorKey: "category", //normal accessorKey
+        header: "Employee Type",
+        Cell: ({ cell }) => {
+          return (
+            <div className="text-zinc-700 font-outfit capitalize">
+              {cell.getValue()}
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: "hourlyRate",
+        header: "Pay",
+        size: 10,
         Cell: ({ cell }) => {
           return (
             <div className="text-zinc-700 font-outfit">${cell.getValue()}</div>
@@ -172,21 +147,21 @@ const EmployeeManagement = () => {
             <div className="text-zinc-700 font-outfit">
               <p
                 className={`flex gap-2 items-center p-1 rounded-lg ${
-                  cell.getValue() === "unavailable" &&
+                  !cell?.row?.original?.latestActivity?.status &&
                   "bg-[#F5F5F5] text-[#A0A0A0] capitalize font-semibold "
                 } ${
-                  cell.getValue() === "checked out" &&
+                  cell?.row?.original?.latestActivity?.status === "check out" &&
                   "bg-[#FDECEC] text-[#CE1010] capitalize font-semibold "
                 } ${
-                  cell.getValue() === "working" &&
+                  cell?.row?.original?.latestActivity?.status === "check in" &&
                   "bg-[#ECFDEC] text-[#16A40F] capitalize font-semibold "
                 } ${
-                  cell.getValue() === "on break" &&
+                  cell?.row?.original?.latestActivity?.status === "on break" &&
                   "bg-[#ECECFD] text-[#5151F0] capitalize font-semibold "
                 }`}
               >
                 <Dot size={30} strokeWidth={3} />
-                {cell.getValue()}
+                {cell?.row?.original?.latestActivity?.status || "Unavailable"}
               </p>
             </div>
           );
@@ -205,19 +180,34 @@ const EmployeeManagement = () => {
               </Menu.Target>
 
               <Menu.Dropdown>
-                <Menu.Item className="!text-zinc-700 !font-semibold !text-center">
+                <Menu.Item
+                  onClick={() => handelEditEmployee(cell?.row?.original)}
+                  className="!text-zinc-700 !font-semibold !text-center"
+                >
                   Edit Employee
                 </Menu.Item>
 
                 <Divider />
-                <Link to={"/dashboard/employee-activity"}>
+                <Link
+                  to={`/dashboard/employee-activity/${cell?.row?.original?._id}`}
+                >
                   <Menu.Item className="!text-blue-800 !font-semibold !text-center">
                     View Detail
                   </Menu.Item>
                 </Link>
                 <Divider />
-                <Menu.Item className="!text-red-600 !font-semibold !text-center">
-                  Deactivate
+                <Menu.Item
+                  onClick={() => {
+                    console.log(cell?.row?.original?._id);
+                    handleActivateDeactivateEmployee(cell?.row?.original?._id);
+                  }}
+                  className={
+                    cell?.row?.original?.isActive
+                      ? "!text-red-600 !font-semibold !text-center"
+                      : "!text-green-600 !font-semibold !text-center"
+                  }
+                >
+                  {cell?.row?.original?.isActive ? "Deactivate" : "Activate"}
                 </Menu.Item>
               </Menu.Dropdown>
             </Menu>
@@ -227,7 +217,6 @@ const EmployeeManagement = () => {
     ],
     []
   );
-
   return (
     <div>
       <Tabs
@@ -236,7 +225,12 @@ const EmployeeManagement = () => {
         variant="pills"
         defaultValue="all"
         className="font-outfit text-slate-600"
-        onChange={(value) => setActivetab(value)}
+        onChange={(value) =>
+          setFilter((prev) => ({
+            ...prev,
+            category: value,
+          }))
+        }
       >
         <div className="flex justify-between items-center flex-wrap">
           {responsive_lg ? (
@@ -250,16 +244,19 @@ const EmployeeManagement = () => {
               data={[
                 { value: "all", label: "All Employees" },
                 { value: "contact", label: "Contact Base" },
-                { value: "hourly", label: "Hourly Tabs" },
-                { value: "full", label: "Full Time Employee" },
+                { value: "hourly rate", label: "Hourly Tabs" },
+                { value: "full time", label: "Full Time Employee" },
               ]}
+              onChange={(value) =>
+                setFilter((prev) => ({ ...prev, category: value }))
+              }
             />
           ) : (
             <Tabs.List>
               <Tabs.Tab value="all">All Employees</Tabs.Tab>
               <Tabs.Tab value="contact">Contact Base</Tabs.Tab>
               <Tabs.Tab value="hourly">Hourly</Tabs.Tab>
-              <Tabs.Tab value="full">Full Time Employee</Tabs.Tab>
+              <Tabs.Tab value="full time">Full Time Employee</Tabs.Tab>
             </Tabs.List>
           )}
           <div className="flex  gap-3  mt-2 lg:mt-0">
@@ -269,6 +266,9 @@ const EmployeeManagement = () => {
                 radius={"xl"}
                 variant="unstyled"
                 className="px-2 font-outfit w-full "
+                onChange={(e) =>
+                  setFilter((prev) => ({ ...prev, search: e.target.value }))
+                }
               />
               <div className="bg-zinc-200 p-2 rounded-full cursor-pointer border border-slate-300">
                 <svg
@@ -285,7 +285,14 @@ const EmployeeManagement = () => {
                 </svg>
               </div>
             </div>
-            <Button size="md" onClick={open} className="font-semibold ">
+            <Button
+              size="md"
+              onClick={async () => {
+                await setEditData({});
+                open();
+              }}
+              className="font-semibold "
+            >
               <svg
                 className="me-2"
                 xmlns="http://www.w3.org/2000/svg"
@@ -312,10 +319,42 @@ const EmployeeManagement = () => {
           </div>
         </div>
 
-        <Tabs.Panel value={activeTab}>
-          <div className="mt-4">
-            <CommonDataTable data={data} columns={columns} />
-          </div>
+        <Tabs.Panel value={filter?.category || "all"}>
+          {false ? (
+            <div className="h-[60vh] flex justify-center items-center">
+              <Loader type="dots" size="xl" color="dark" />
+            </div>
+          ) : employees?.data?.length > 0 ? (
+            <div className="mt-4">
+              <CommonDataTable
+                data={employees?.data || []}
+                columns={columns}
+                handleSorting={handleSorting}
+                isLoading={loading}
+                sort={[
+                  {
+                    id: filter?.sort,
+                    desc: filter?.sortDirection === "asc" ? true : false,
+                  },
+                ]}
+                handlePagination={handlePagination}
+                pagination={{
+                  pageIndex: filter?.page,
+                  pageSize: filter?.limit,
+                }}
+                totalCount={employees?.totalDoc[0]?.count}
+              />
+            </div>
+          ) : (
+            <div className="h-[60vh] flex justify-center items-center">
+              <div>
+                <p className="text-2xl font-semibold font-outfit text-center">
+                  No employees found!
+                </p>
+                <p className="font-outfit">There are no employees found yet</p>
+              </div>
+            </div>
+          )}
         </Tabs.Panel>
         {/* <Tabs.Panel value="contact">contact tab content</Tabs.Panel>
         <Tabs.Panel value="hourly">hourly tab content</Tabs.Panel>
@@ -325,7 +364,7 @@ const EmployeeManagement = () => {
         opened={opened}
         close={close}
         position={"right"}
-        content={<AddEmployee close={close} />}
+        content={<AddEmployee data={editData} close={close} filter={filter} />}
       />
     </div>
   );

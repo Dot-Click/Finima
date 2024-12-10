@@ -2,12 +2,15 @@ import { Avatar } from "@mantine/core";
 import WorkLogCard from "../common/WorkLogCard";
 import ActivityMap from "../common/ActivityMap";
 import { X } from "lucide-react";
+import moment from "moment";
 
-const TodayActivity = ({ close }) => {
+const TodayActivity = ({ close, logs }) => {
+  console.log(logs);
+
   const data = [
     {
       id: 1,
-      time: "09:00 AM",
+      time: moment(logs?.checkin).format("LT"),
       label: "Check In",
       icon: (
         <svg
@@ -32,7 +35,7 @@ const TodayActivity = ({ close }) => {
     },
     {
       id: 2,
-      time: "05:00 AM",
+      time: moment(logs?.checkout).format("LT"),
       label: "Check out",
       icon: (
         <svg
@@ -57,7 +60,7 @@ const TodayActivity = ({ close }) => {
     },
     {
       id: 3,
-      time: "7 Hrs",
+      time: Math.ceil(logs?.totalHours),
       label: "Total Hours",
       icon: (
         <svg
@@ -76,7 +79,7 @@ const TodayActivity = ({ close }) => {
     },
     {
       id: 4,
-      time: "1 Hrs",
+      time: Math.ceil(logs?.totalBreak),
       label: "Break Time",
       icon: (
         <svg
@@ -111,14 +114,14 @@ const TodayActivity = ({ close }) => {
       />
       <div className="p-4 xl:p-6 bg-[#FFFEF9] border-b border-[#E9E0C380] flex flex-col justify-center items-center gap-4">
         <div>
-          <Avatar size={"xl"}>WJ</Avatar>
+          <Avatar size={"xl"}>{logs?.user[0]?.name[0]}</Avatar>
         </div>
         <div>
           <p className="text-center text-2xl font-semibold font-outfit text-zinc-800">
-            Williamson Jack
+            {logs?.user[0]?.name}
           </p>
           <p className="text-center text-md text-slate-400 font-outfit font-thin">
-            williamsonjack@gmail.com
+            {logs?.user[0]?.email}
           </p>
         </div>
       </div>
@@ -130,7 +133,7 @@ const TodayActivity = ({ close }) => {
             </div>
           ))}
         </div>
-        <ActivityMap />
+        <ActivityMap locations={logs.locations} />
       </div>
     </div>
   );

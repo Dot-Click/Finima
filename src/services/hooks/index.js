@@ -1,14 +1,14 @@
 // import { useSelector } from "react-redux";
+import Cookies from "js-cookie";
+export const useAuth = () => {
+  const isAuthenticated = Cookies.get("user_id");
 
-// export const useAuth = () => {
-//   const { isAuthenticated } = useSelector((state) => state.auth);
-
-//   if (isAuthenticated) {
-//     return true;
-//   } else {
-//     return false;
-//   }
-// };
+  if (isAuthenticated) {
+    return true;
+  } else {
+    return false;
+  }
+};
 
 // export const getToken = () => {
 //   const token = localStorage.getItem("token");

@@ -2,18 +2,28 @@ import { Button, TextInput } from "@mantine/core";
 import { AtSign, Undo2 } from "lucide-react";
 import { useForm } from "@mantine/form";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { forgotPassword } from "../../redux/slices/auth/thunks";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state?.auth);
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: { email: "" },
-
-    // functions will be used to validate values at corresponding key
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
     },
   });
+  const handleSubmit = async (values) => {
+    const res = await dispatch(forgotPassword(values));
+
+    if (res?.payload?.success) {
+      navigate(`/verify-email/${values?.email}`);
+    }
+  };
   return (
     <div className="w-4/5 md:w-3/5 lg:w-4/5 xl:w-3/6 flex flex-col gap-10">
       <div>
@@ -30,7 +40,7 @@ const ForgotPassword = () => {
       </div>
 
       <form
-        onSubmit={form.onSubmit(() => navigate("/verify-email"))}
+        onSubmit={form.onSubmit(handleSubmit)}
         className="flex flex-col gap-6"
       >
         <TextInput
@@ -43,7 +53,14 @@ const ForgotPassword = () => {
           {...form.getInputProps("email")}
         />
 
-        <Button type="submit" size="lg" mt={"xl"} fullWidth>
+        <Button
+          loading={loading}
+          loaderProps={{ type: "dots" }}
+          type="submit"
+          size="lg"
+          mt={"xl"}
+          fullWidth
+        >
           Send Code
         </Button>
       </form>
