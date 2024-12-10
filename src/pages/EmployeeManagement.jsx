@@ -326,7 +326,7 @@ const EmployeeManagement = () => {
             <div className="h-[60vh] flex justify-center items-center">
               <Loader type="dots" size="xl" color="dark" />
             </div>
-          ) : employees?.totalDoc[0]?.count > 0 ? (
+          ) : employees?.data?.length > 0 ? (
             <div className="mt-4">
               <CommonDataTable
                 data={employees?.data || []}
