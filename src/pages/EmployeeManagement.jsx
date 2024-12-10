@@ -344,7 +344,7 @@ const EmployeeManagement = () => {
                   pageIndex: filter?.page,
                   pageSize: filter?.limit,
                 }}
-                totalCount={employees?.totalDoc[0]?.count}
+                totalCount={employees?.totalDocs[0]?.count}
               />
             </div>
           ) : (
