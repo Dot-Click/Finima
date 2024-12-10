@@ -190,6 +190,7 @@ const EmployeeManagement = () => {
                 <Divider />
                 <Link
                   to={`/dashboard/employee-activity/${cell?.row?.original?._id}`}
+                  state={{ ...cell?.row?.original }}
                 >
                   <Menu.Item className="!text-blue-800 !font-semibold !text-center">
                     View Detail
