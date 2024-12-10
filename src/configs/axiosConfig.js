@@ -1,8 +1,8 @@
 import axios from "axios";
 // import { errorMessage } from "../globalFunctions";
 
-export const baseURL = "http://192.168.100.18:8001";
-// export const baseURL = "https://finma-be-production.up.railway.app";
+// export const baseURL = "http://192.168.100.18:8001";
+export const baseURL = "https://finma-be-production.up.railway.app";
 
 // axios instance for json data
 const custAxios = axios.create({
