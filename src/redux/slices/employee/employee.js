@@ -102,7 +102,7 @@ const employeeSlice = createSlice({
       })
       .addCase(getPayroll.rejected, (state, action) => {
         state.loading = false;
-        toast.success(state.error || "Whoops! something went wrong");
+        toast.error(state.error || "Whoops! something went wrong");
       });
   },
 });

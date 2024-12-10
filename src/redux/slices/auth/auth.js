@@ -44,6 +44,8 @@ const authSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Store error message
+        toast.error(action.payload || "Whoops! something went wrong");
+
         // errorMessage(state.error); // Optionally display the error
       })
       // Forgot action handlers
@@ -54,6 +56,8 @@ const authSlice = createSlice({
       .addCase(forgotPassword.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Store error message
+        toast.error(action.payload);
+
         // errorMessage(state.error); // Optionally display the error
       })
       // reset password action handlers
@@ -64,7 +68,7 @@ const authSlice = createSlice({
       .addCase(resetPassword.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Store error message
-        // errorMessage(state.error); // Optionally display the error
+        toast.error(action.payload);
       })
       // logout action handlers
       .addCase(logout.fulfilled, (state, action) => {

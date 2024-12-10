@@ -20,7 +20,6 @@ import {
   getEmployee,
   activateDeactivateEmployee,
 } from "../redux/slices/employee/thunks";
-import Cookies from "js-cookie";
 const EmployeeManagement = () => {
   const dispatch = useDispatch();
   const { employees, loading } = useSelector((state) => state.employee);
@@ -218,7 +217,6 @@ const EmployeeManagement = () => {
     ],
     []
   );
-  console.log(employees);
 
   return (
     <div>
